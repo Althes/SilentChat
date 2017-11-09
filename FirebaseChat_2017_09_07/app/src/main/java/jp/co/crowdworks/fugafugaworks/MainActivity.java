@@ -16,11 +16,12 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.Query;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -134,28 +135,42 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference ref = database.getReference();
 
-                DatabaseReference databaseReference = database.getReference();
-                databaseReference.child("user/");
-                databaseReference.addValueEventListener(new ValueEventListener() {
+                Query query = ref.child("message").orderByChild("UUID").equalTo("VfJdq5uZ0dSydzaIOhTUVsElqH13");
+                query.addChildEventListener(new ChildEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        Log.i("Firebase", snapshot.getValue().toString());
+                    public void onChildAdded(DataSnapshot dataSnapshot, String previousKey) {
+                        String sender = dataSnapshot.child("Message").getValue().toString();
+                        String body = dataSnapshot.child("UUID").getValue().toString();
+                        Log.d("Firebase", String.format("Message:%s, UUID:%s", sender, body));
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        Log.e("Firebase", String.valueOf(databaseError));
+
                     }
-
                 });
-
             }
         });
 
 
     }
-
     //ログインチェックメソッド
     public void LoginCheck(){
         //ここでFirebaseにログイン
