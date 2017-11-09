@@ -21,7 +21,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
     private static final String MESSAGE_STORE = "message";
+    private static final String USERS_STORE = "users";
     private FirebaseListAdapter<Message> mAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         //ここログイン
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         if (user==null) {
             new UserLoginDialogFragment().show(getSupportFragmentManager(),"login");
         }
@@ -55,6 +58,11 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listview = (ListView) findViewById(R.id.listview);
         listview.setAdapter(mAdapter);
+
+
+
+       // FuuidAdd();
+
     }
 
     @Override
@@ -71,6 +79,13 @@ public class MainActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         return database.getReference(MESSAGE_STORE);
     }
+
+    private DatabaseReference getUsersRef() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        return database.getReference(USERS_STORE);
+    }
+
+
 
     //メッセージを入力ボックスにあるか確認してSendMessageに渡す
     private void setupComposer() {
@@ -90,6 +105,11 @@ public class MainActivity extends AppCompatActivity {
         return ((TextView) findViewById(txt)).getText().toString();
     }
 
+    private void FuuidAdd(){//データベースのusersに追加
+        //getUsersRef().child("UUID").child("FUUID").push().setValue("test");//usersの子のUUIDの子のFUUIDにpushしてsetValue("   ")をセット
+    }
+
+
     private void sendMessage(String content) {
         //ここでFirebaseにログイン
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -105,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        getMessageRef().push().setValue(new Message(user.getUid(), content)).continueWith(new Continuation<Void, Object>() {
+        getMessageRef().push().setValue(new Message(user.getUid(), content,"figafiga")).continueWith(new Continuation<Void, Object>() {
             @Override
             public Object then(@NonNull Task<Void> task) throws Exception {
                 if (!task.isSuccessful()) {
@@ -116,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
         });
+
+
+
     }
 
     //ログインチェックメソッド
