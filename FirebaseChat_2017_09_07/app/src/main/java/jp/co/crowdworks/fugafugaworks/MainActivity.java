@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-//
+
         setupComposer();
     }
 
@@ -38,12 +38,13 @@ public class MainActivity extends AppCompatActivity {
 
         //ここログイン
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         if (user==null) {
             new UserLoginDialogFragment().show(getSupportFragmentManager(),"login");
         }
-        else {
-            new UserLogoutDialogFragment().show(getSupportFragmentManager(), "logout");
-        }
+//        else {
+//            new UserLogoutDialogFragment().show(getSupportFragmentManager(), "logout");
+//        }
 
         mAdapter = new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.simple_list_item_1, getMessageRef()) {
             @Override
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        getMessageRef().push().setValue(new Message(user.getUid(), content)).continueWith(new Continuation<Void, Object>() {
+       getMessageRef().push().setValue(new Message(user.getUid(), content)).continueWith(new Continuation<Void, Object>() {
             @Override
             public Object then(@NonNull Task<Void> task) throws Exception {
                 if (!task.isSuccessful()) {
