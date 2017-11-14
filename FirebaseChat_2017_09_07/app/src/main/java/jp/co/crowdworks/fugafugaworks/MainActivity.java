@@ -26,7 +26,7 @@ import com.google.firebase.database.Query;
 
 public class MainActivity extends AppCompatActivity {
     private static final String MESSAGE_STORE = "message";
-    private static final String USER_STORE = "User";
+    private static final String USER_STORE = "users";
     private FirebaseListAdapter<Message> mAdapter;
     private FirebaseListAdapter<Friend> fAdapter;
 
@@ -65,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         ListView listview = (ListView) findViewById(R.id.listview);
         listview.setAdapter(mAdapter);
 
+        UUIDAdd();
+
     }
 
     @Override
@@ -80,6 +82,11 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference getMessageRef() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         return database.getReference(MESSAGE_STORE);
+    }
+
+    private DatabaseReference getUsersRef() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        return database.getReference(USER_STORE);
     }
 
 
@@ -102,6 +109,11 @@ public class MainActivity extends AppCompatActivity {
         return ((TextView) findViewById(txt)).getText().toString();
     }
 
+    //usersのUUIDのFUUIDに追加
+    private void UUIDAdd(){
+        getUsersRef().child("UUID").child("FUUID").push().setValue(new Users("id_test","name_test"));
+    }
+
     private void sendMessage(String content) {
         //ここでFirebaseにログイン
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -116,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                     .show();
             return;
         }
+
 
         getMessageRef().push().setValue(new Message(user.getUid(), content)).continueWith(new Continuation<Void, Object>() {
             @Override
