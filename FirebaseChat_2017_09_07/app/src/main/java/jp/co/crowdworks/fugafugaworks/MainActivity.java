@@ -26,9 +26,9 @@ import com.google.firebase.database.Query;
 
 public class MainActivity extends AppCompatActivity {
     private static final String MESSAGE_STORE = "message";
-    private static final String USER_STORE = "User";
     private FirebaseListAdapter<Message> mAdapter;
     private FirebaseListAdapter<Friend> fAdapter;
+    private String str = "aaa";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +47,12 @@ public class MainActivity extends AppCompatActivity {
 
         //ここログイン
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user==null) {
-            new UserLoginDialogFragment().show(getSupportFragmentManager(),"login");
-        }
-        else {
+        if (user == null) {
+            new UserLoginDialogFragment().show(getSupportFragmentManager(), "login");
+        } else {
             new UserLogoutDialogFragment().show(getSupportFragmentManager(), "logout");
         }
-
-        mAdapter = new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.simple_list_item_1, getMessageRef()) {
+        mAdapter = new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.simple_list_item_1, getUserRef()) {
             @Override
             protected void populateView(View v, Message model, int position) {
                 ((TextView) v).setText(model.UUID+": "+model.Message);
@@ -64,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listview = (ListView) findViewById(R.id.listview);
         listview.setAdapter(mAdapter);
+
 
     }
 
@@ -76,13 +75,13 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    //データベースメッセージ
-    private DatabaseReference getMessageRef() {
+    //ログインユーザーのIDを受け取ってデータベースに保存
+    private DatabaseReference getUserRef() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String USER_STORE = user.getUid();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        return database.getReference(MESSAGE_STORE);
+        return database.getReference(USER_STORE);
     }
-
-
 
     //メッセージを入力ボックスにあるか確認してSendMessageに渡す
     private void setupComposer() {
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        getMessageRef().push().setValue(new Message(user.getUid(), content)).continueWith(new Continuation<Void, Object>() {
+        getUserRef().push().setValue(new Message(user.getUid(), content,"VfJdq5uZ0dSydzaIOhTUVsElqH13")).continueWith(new Continuation<Void, Object>() {
             @Override
             public Object then(@NonNull Task<Void> task) throws Exception {
                 if (!task.isSuccessful()) {
@@ -130,46 +129,40 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void serchData(){
-        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+    public String serchData() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+
+        Query query = ref.child("message").orderByChild("UUID").equalTo("VfJdq5uZ0dSydzaIOhTUVsElqH13");
+        query.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onClick(View v) {
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference ref = database.getReference();
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousKey) {
+                String sender = dataSnapshot.child("Message").getValue().toString();
+                String body = dataSnapshot.child("UUID").getValue().toString();
+                Log.d("Firebase", String.format("Message:%s, UUID:%s", sender, body));
+            }
 
-                Query query = ref.child("message").orderByChild("UUID").equalTo("VfJdq5uZ0dSydzaIOhTUVsElqH13");
-                query.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String previousKey) {
-                        String sender = dataSnapshot.child("Message").getValue().toString();
-                        String body = dataSnapshot.child("UUID").getValue().toString();
-                        Log.d("Firebase", String.format("Message:%s, UUID:%s", sender, body));
-                    }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
 
-                    }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
 
-                    }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
 
-                    }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
             }
         });
-
-
+        return "teest";
     }
     //ログインチェックメソッド
     public void LoginCheck(){
