@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        serchData();
+        //serchData();
         setupComposer();
 
 
@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     //ログインユーザーのIDを受け取ってデータベースに保存
     private DatabaseReference getUserRef() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //ログインしていないときにエラー
         String USER_STORE = user.getUid();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         return database.getReference(USER_STORE);
