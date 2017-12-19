@@ -1,6 +1,7 @@
 package jp.co.crowdworks.fugafugaworks;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -23,22 +24,27 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final String MESSAGE_STORE = "message";
     private static final String USER_STORE = "users";
     private FirebaseListAdapter<Message> mAdapter;
-    private FirebaseListAdapter<Friend> fAdapter;
+    private FirebaseListAdapter<Users> uAdapter;
+
+
+   ArrayList<SnapshotData> arrDataSnapshot = new ArrayList<SnapshotData>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
         serchData();
+        ListaData();
         setupComposer();
-
-
     }
 
     @Override
@@ -54,18 +60,21 @@ public class MainActivity extends AppCompatActivity {
             new UserLogoutDialogFragment().show(getSupportFragmentManager(), "logout");
         }
 
+
         mAdapter = new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.simple_list_item_1, getMessageRef()) {
             @Override
             protected void populateView(View v, Message model, int position) {
                 ((TextView) v).setText(model.UUID+": "+model.Message);
+                // Log.i("      test",position);
             }
         };
+
         //リストビューにFirebaseのメッセージをいれてる？
 
         ListView listview = (ListView) findViewById(R.id.listview);
         listview.setAdapter(mAdapter);
 
-        UUIDAdd();
+       // UUIDAdd();
 
     }
 
@@ -111,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
     //usersのUUIDのFUUIDに追加
     private void UUIDAdd(){
-        getUsersRef().child("UUID").child("FUUID").push().setValue(new Users("id_test","name_test"));
+        getUsersRef().child("test01").child("friend").push().setValue(new Users("test01"));
     }
 
     private void sendMessage(String content) {
@@ -141,6 +150,13 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
         });
+
+        /*
+        for (SnapshotData data : arrDataSnapshot){
+            Log.i("      test",data.getUuid());
+            Log.i("      test2",data.getMessage());
+        }
+        */
     }
 
     public void serchData(){
@@ -150,13 +166,20 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference ref = database.getReference();
 
-                Query query = ref.child("message").orderByChild("UUID").equalTo("VfJdq5uZ0dSydzaIOhTUVsElqH13");
+                Query query = ref.child("message").orderByChild("UUID").equalTo("p48LnTPoSJQLag8NjUuNc1BvUTO2");
                 query.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String previousKey) {
                         String sender = dataSnapshot.child("Message").getValue().toString();
                         String body = dataSnapshot.child("UUID").getValue().toString();
-                        Log.d("Firebase", String.format("Message:%s, UUID:%s", sender, body));
+                        //Log.d("Firebase", String.format("Message:%s, UUID:%s", sender, body));
+                       // Log.d("Firebase", String.format("wwwwwwwwwwwww:%s", dataSnapshot));
+                        SnapshotData snapshotData = new SnapshotData();
+                        snapshotData.setUuid(dataSnapshot.child("UUID").getValue().toString());
+                        snapshotData.setMessage(dataSnapshot.child("Message").getValue().toString());
+                        arrDataSnapshot.add(snapshotData);
+
+
                     }
 
                     @Override
@@ -184,6 +207,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    public  void ListaData(){
+
+        findViewById(R.id.listabtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //String lista_text = mAdapter.getView().toString();
+                Intent intent = new Intent(getApplication(),Friend_Lista.class);
+                //intent.putExtra("Lista",mAdapter);
+                startActivity(intent);
+
+            }
+        });
+    }
     //ログインチェックメソッド
     public void LoginCheck(){
         //ここでFirebaseにログイン
@@ -199,3 +237,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
+
