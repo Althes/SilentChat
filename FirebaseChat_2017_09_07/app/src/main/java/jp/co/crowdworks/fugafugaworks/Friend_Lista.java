@@ -16,7 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Friend_Lista extends AppCompatActivity {
 
-    private static final String USERE_STORE = "users";
+    private static final String USERE_STORE = "tamesi";
     private FirebaseListAdapter<Users> uAdapter;
 
     //データベースメッセージ
@@ -36,10 +36,10 @@ public class Friend_Lista extends AppCompatActivity {
         super.onResume();
 
 
-        uAdapter = new FirebaseListAdapter<Users>(this, Users.class, android.R.layout.simple_list_item_1, getUsersRef().child("test01").child("friend")) {
+        uAdapter = new FirebaseListAdapter<Users>(this, Users.class, android.R.layout.simple_list_item_1, getUsersRef().child("UUID").child("FUUID")) {
             @Override
             protected void populateView(View v, Users model, int position) {
-                ((TextView) v).setText(model.user);
+                ((TextView) v).setText(model.Name);
                 // Log.i("      test",position);
             }
         };

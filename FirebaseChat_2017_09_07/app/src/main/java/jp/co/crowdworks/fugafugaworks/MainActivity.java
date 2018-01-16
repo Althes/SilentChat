@@ -172,12 +172,12 @@ public class MainActivity extends AppCompatActivity {
                     public void onChildAdded(DataSnapshot dataSnapshot, String previousKey) {
                         String sender = dataSnapshot.child("Message").getValue().toString();
                         String body = dataSnapshot.child("UUID").getValue().toString();
-                        //Log.d("Firebase", String.format("Message:%s, UUID:%s", sender, body));
+                        Log.d("Firebase", String.format("Message:%s, UUID:%s", sender, body));
                        // Log.d("Firebase", String.format("wwwwwwwwwwwww:%s", dataSnapshot));
-                        SnapshotData snapshotData = new SnapshotData();
-                        snapshotData.setUuid(dataSnapshot.child("UUID").getValue().toString());
-                        snapshotData.setMessage(dataSnapshot.child("Message").getValue().toString());
-                        arrDataSnapshot.add(snapshotData);
+                       // SnapshotData snapshotData = new SnapshotData();
+                        //snapshotData.setUuid(dataSnapshot.child("UUID").getValue().toString());
+                        //snapshotData.setMessage(dataSnapshot.child("Message").getValue().toString());
+                        //arrDataSnapshot.add(snapshotData);
 
 
                     }
