@@ -44,24 +44,17 @@ public class Search_Friend extends AppCompatActivity {
             public void onClick(View v) {
                 //ボタンををしてからの処理
                 idtext = searchid.getText().toString();
-                resultid.setText(idtext);
-                serchData();
-            }
-        });
-    }
+                resultid.setText(sender);
 
-    public void serchData(){
-        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference ref = database.getReference();
 
-                Query query = ref.child("tamesi").orderByChild("ID").equalTo("000");//.child("UUID").child("FUUID")
+
+                Query query = ref.child("zentaitamesi").orderByChild("ID").equalTo(idtext);//.child("UUID").child("FUUID")
                 query.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String previousKey) {
-                        sender = dataSnapshot.child("ID").getValue().toString();
+                        sender = dataSnapshot.child("Name").getValue().toString();
                         //String body = dataSnapshot.child("UUID").getValue().toString();
                         //Log.d("Firebase", String.format("Message:%s, UUID:%s", sender, body));
                         Log.d("Firebase", String.format("wwwwwwwwwwwww:%s", sender));
@@ -90,10 +83,14 @@ public class Search_Friend extends AppCompatActivity {
 
                     }
                 });
+
             }
         });
-
-
     }
+
+
+
+
+
 
 }

@@ -1,5 +1,6 @@
 package jp.co.crowdworks.fugafugaworks;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -29,6 +30,8 @@ public class Friend_Lista extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.friend_lista);
+
+        buttan();
     }
 
     @Override
@@ -48,6 +51,20 @@ public class Friend_Lista extends AppCompatActivity {
 
         ListView listview = (ListView) findViewById(R.id.listview_friend);
         listview.setAdapter(uAdapter);
+    }
+
+    public  void buttan(){
+
+        findViewById(R.id.button001).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ボタンををしてからの処理
+                //String lista_text = mAdapter.getView().toString();
+                Intent intent = new Intent(getApplication(),Search_Friend.class);
+                //intent.putExtra("Lista",mAdapter);
+                startActivity(intent);
+            }
+        });
     }
 
 

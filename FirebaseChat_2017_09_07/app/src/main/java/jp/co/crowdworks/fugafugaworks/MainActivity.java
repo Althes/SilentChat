@@ -30,7 +30,9 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private static final String MESSAGE_STORE = "message";
     private static final String USER_STORE = "users";
+    private static final String TAMESI_STORE = "zentaitamesi";
     private FirebaseListAdapter<Message> mAdapter;
+    private FirebaseListAdapter<Message> tAdapter;
     private FirebaseListAdapter<Users> uAdapter;
 
 
@@ -98,6 +100,11 @@ public class MainActivity extends AppCompatActivity {
         return database.getReference(USER_STORE);
     }
 
+    private DatabaseReference getTamesiRef() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        return database.getReference(TAMESI_STORE);
+    }
+
 
 
     //メッセージを入力ボックスにあるか確認してSendMessageに渡す
@@ -120,7 +127,18 @@ public class MainActivity extends AppCompatActivity {
 
     //usersのUUIDのFUUIDに追加
     private void UUIDAdd(){
-        getUsersRef().child("test01").child("friend").push().setValue(new Users("test01"));
+       // getUsersRef().child("test01").child("friend").push().setValue(new Users("test01"));
+        /*
+        getTamesiRef().push().setValue(new Tamesi("001","test01"));
+        getTamesiRef().push().setValue(new Tamesi("002","test02"));
+        getTamesiRef().push().setValue(new Tamesi("003","test03"));
+        getTamesiRef().push().setValue(new Tamesi("004","test04"));
+        getTamesiRef().push().setValue(new Tamesi("005","test05"));
+        getTamesiRef().push().setValue(new Tamesi("006","test06"));
+        getTamesiRef().push().setValue(new Tamesi("007","test07"));
+        getTamesiRef().push().setValue(new Tamesi("008","test08"));
+        getTamesiRef().push().setValue(new Tamesi("009","test09"));
+        */
     }
 
     private void sendMessage(String content) {

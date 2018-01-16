@@ -24,6 +24,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="    "
-        android:layout_weight="0.08" />
+        android:layout_weight="0.01" />
+
+    <ListView
+        android:id="@+id/searchlist"
+        android:layout_width="match_parent"
+        android:layout_height="351dp" />
 
 </LinearLayout>
