@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         ListView listview = (ListView) findViewById(R.id.listview);
         listview.setAdapter(mAdapter);
 
-       // UUIDAdd();
+        //UUIDAdd();
 
     }
 
@@ -127,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
 
     //usersのUUIDのFUUIDに追加
     private void UUIDAdd(){
-       // getUsersRef().child("test01").child("friend").push().setValue(new Users("test01"));
+        //getUsersRef().child("test01").child("friend").push().setValue(new Users("test01"));
+        getUsersRef().push().setValue(new Users("MyName"));
         /*
         getTamesiRef().push().setValue(new Tamesi("001","test01"));
         getTamesiRef().push().setValue(new Tamesi("002","test02"));
@@ -144,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
     private void sendMessage(String content) {
         //ここでFirebaseにログイン
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        //user.getUid();
         //ログインできていないときメッセージ送信はしない
 
         if(user==null){

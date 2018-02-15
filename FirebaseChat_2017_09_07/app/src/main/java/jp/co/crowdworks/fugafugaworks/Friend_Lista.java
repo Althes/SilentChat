@@ -8,6 +8,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -17,8 +19,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Friend_Lista extends AppCompatActivity {
 
-    private static final String USERE_STORE = "tamesi";
-    private FirebaseListAdapter<Users> uAdapter;
+    private static final String USERE_STORE = "users";
+    private FirebaseListAdapter<Friend> uAdapter;
+
+    private String uuid;
+
+    private TextView text;
 
     //データベースメッセージ
     private DatabaseReference getUsersRef() {
@@ -31,6 +37,14 @@ public class Friend_Lista extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.friend_lista);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        uuid = user.getUid().toString();
+        /*
+        text = (TextView)findViewById(R.id.textlist);
+
+        text.setText(uuid);
+        */
         buttan();
     }
 
@@ -39,10 +53,10 @@ public class Friend_Lista extends AppCompatActivity {
         super.onResume();
 
 
-        uAdapter = new FirebaseListAdapter<Users>(this, Users.class, android.R.layout.simple_list_item_1, getUsersRef().child("UUID").child("FUUID")) {
+        uAdapter = new FirebaseListAdapter<Friend>(this, Friend.class, android.R.layout.simple_list_item_1, getUsersRef().child(uuid).child("friend")) {
             @Override
-            protected void populateView(View v, Users model, int position) {
-                ((TextView) v).setText(model.Name);
+            protected void populateView(View v, Friend model, int position) {
+                ((TextView) v).setText(model.FName);
                 // Log.i("      test",position);
             }
         };
