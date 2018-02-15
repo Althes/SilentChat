@@ -13,12 +13,12 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -129,38 +129,84 @@ public class Search_Friend extends AppCompatActivity {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference ref = database.getReference();
 
-                //Query query = ref.child("users").child(idtext).orderByChild(MyNameTtext).equalTo("つだ");//.child//.child("UUID").child("FUUID")//検索の奴～
-                Query query = ref.child("users").child(idtext).equalTo(idtext);//.child//.child("UUID").child("FUUID")//検索の奴～
-                query.addChildEventListener(new ChildEventListener() {
-
-
+                // TODO ユーザ名を取得する
+                Query query = ref.child("users").child(idtext).child("MyName");
+                query.addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String previousKey) {
-                        sender = dataSnapshot.child(MyNameTtext).getValue().toString();
-                        //Log.d("Firebase", String.format("wwwwwwwwwwwww:%s", sender));
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // ユーザ名取得
+                        String myName = dataSnapshot.getValue().toString();
+                        Log.i(TAG, "MyName: " + dataSnapshot + "wwwwwwwwwwwwwwwwwwwwwww"+myName);
 
-                        resultid.setText(sender);//テキストの表示
-                        //onResume();
+                        sender = myName;
+
                         ListviewProcess(sender);
                     }
 
                     @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                    }
-
-                    @Override
                     public void onCancelled(DatabaseError databaseError) {
-
                     }
                 });
+
+//
+//                // TODO ユーザの検索
+//                Query findUserQuery = ref.child("users");
+//                findUserQuery.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//                    }
+//                });
+
+
+
+                //Query query = ref.child("users").child(idtext).orderByChild(MyNameTtext).equalTo("つだ");//.child//.child("UUID").child("FUUID")//検索の奴～
+
+
+
+                //Query query = ref.child("users").child(idtext).equalTo(idtext);//.child//.child("UUID").child("FUUID")//検索の奴～
+//                query.addChildEventListener(new ChildEventListener() {
+//
+//                    @Override
+//                    public void onChildAdded(DataSnapshot dataSnapshot, String previousKey) {
+//
+//                        Object profile = dataSnapshot.getValue();
+//
+//                        // ユーザ名を取得
+//                        Log.i(TAG,"profile:"+profile);
+//
+//                        // ユーザの電話番号を取得
+//
+//
+//                        sender = dataSnapshot.child(MyNameTtext).getValue().toString();
+//                        //Log.d("Firebase", String.format("wwwwwwwwwwwww:%s", sender));
+//
+//                        resultid.setText(sender);//テキストの表示
+//                        //onResume();
+//                        ListviewProcess(sender);
+//                    }
+
+//                    @Override
+//                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                    }
+//
+//                    @Override
+//                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+//                    }
+//
+//                    @Override
+//                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
 
 
 
