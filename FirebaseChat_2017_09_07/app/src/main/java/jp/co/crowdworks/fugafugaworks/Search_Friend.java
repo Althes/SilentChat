@@ -107,9 +107,8 @@ public class Search_Friend extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(sender != "  ") {
-                    getUsersRef().child(uuid).child("friend").child(idtext).setValue(new Search(sender));
-                    //getUsersRef().child("test01").child("friend").push().setValue(new Users("test01"));
-                    //Log.i(TAG,"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
+                    getUsersRef().child(uuid).child("friend").child(idtext).setValue(new Search(sender));//検索した人をフレンドに加える
+
                 }
             }
         });
@@ -147,103 +146,7 @@ public class Search_Friend extends AppCompatActivity {
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
-
-//
-//                // TODO ユーザの検索
-//                Query findUserQuery = ref.child("users");
-//                findUserQuery.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//                    }
-//                });
-
-
-
-                //Query query = ref.child("users").child(idtext).orderByChild(MyNameTtext).equalTo("つだ");//.child//.child("UUID").child("FUUID")//検索の奴～
-
-
-
-                //Query query = ref.child("users").child(idtext).equalTo(idtext);//.child//.child("UUID").child("FUUID")//検索の奴～
-//                query.addChildEventListener(new ChildEventListener() {
-//
-//                    @Override
-//                    public void onChildAdded(DataSnapshot dataSnapshot, String previousKey) {
-//
-//                        Object profile = dataSnapshot.getValue();
-//
-//                        // ユーザ名を取得
-//                        Log.i(TAG,"profile:"+profile);
-//
-//                        // ユーザの電話番号を取得
-//
-//
-//                        sender = dataSnapshot.child(MyNameTtext).getValue().toString();
-//                        //Log.d("Firebase", String.format("wwwwwwwwwwwww:%s", sender));
-//
-//                        resultid.setText(sender);//テキストの表示
-//                        //onResume();
-//                        ListviewProcess(sender);
-//                    }
-
-//                    @Override
-//                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//                    }
-//
-//                    @Override
-//                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-//                    }
-//
-//                    @Override
-//                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//
-//                    }
-//                });
-
-
-
-
             }
         });
     }
-
-
-    /*
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-
-       uAdapter = new FirebaseListAdapter<Search>(this, Search.class, android.R.layout.simple_list_item_1, getUsersRef().child(idtext).child("MyName")) {
-            @Override
-            protected void populateView(View v, Search model, int position) {
-                ((TextView) v).setText(model.MyName);
-                // Log.i("      test",position);
-            }
-        };
-      /*
-        uAdapter = new FirebaseListAdapter<Friend>(this, Friend.class, android.R.layout.simple_list_item_1, getUsersRef().child("p48LnTPoSJQLag8NjUuNc1BvUTO2").child("friend")) {
-            @Override
-            protected void populateView(View v, Friend model, int position) {
-                ((TextView) v).setText(model.FName);
-                // Log.i("      test",position);
-            }
-        };
-
-        //リストビューにFirebaseのメッセージをいれてる？
-
-        ListView listview = (ListView) findViewById(R.id.searchlist);
-        listview.setAdapter(uAdapter);
-    }
-    */
-
-
 }
