@@ -20,16 +20,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String MESSAGE_STORE = "message";
+    private static final String MESSAGE_STORE = "message";              //Firebaseのツリー構造の中を参照するための変数
     private FirebaseListAdapter<Message> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
         setupComposer();
+
     }
 
     @Override
@@ -49,13 +49,13 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.simple_list_item_1, getMessageRef()) {
             @Override
             protected void populateView(View v, Message model, int position) {
-                ((TextView) v).setText(model.UUID+": "+model.Message);
+                ((TextView) v).setText(model.UUID + "\r\n" + model.Message);
             }
         };
-        //リストビューにFirebaseのメッセージをいれてる？
 
+        //リストビューにFirebaseのメッセージをいれてる？
         ListView listview = (ListView) findViewById(R.id.listview);
-        listview.setAdapter(mAdapter);
+        listview.setAdapter(mAdapter);                                      //ここでListViewにコメントをセットしてFirebaseにバックアップしてる
     }
 
     @Override
@@ -124,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
         //ここでFirebaseにログイン
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user==null){
-            Log.d("ログインチェック","NotLogin");
             new AlertDialog.Builder(this)
                     .setTitle("エラー")
                     .setMessage("ログインしていません")
