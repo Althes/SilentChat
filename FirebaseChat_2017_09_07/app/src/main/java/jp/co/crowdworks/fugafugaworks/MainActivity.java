@@ -28,28 +28,25 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
-
     private static final String MESSAGE_STORE = "message";
     private static final String USER_STORE = "users";
     private static final String TAMESI_STORE = "zentaitamesi";
-
     private FirebaseListAdapter<Message> mAdapter;
     private FirebaseListAdapter<Message> tAdapter;
     private FirebaseListAdapter<Users> uAdapter;
 
 
-   ArrayList<SnapshotData> arrDataSnapshot = new ArrayList<SnapshotData>();
+    ArrayList<SnapshotData> arrDataSnapshot = new ArrayList<SnapshotData>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         serchData();
         ListaData();
-
         setupComposer();
-
     }
 
     @Override
@@ -58,27 +55,29 @@ public class MainActivity extends AppCompatActivity {
 
         //ここログイン
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         if (user==null) {
             new UserLoginDialogFragment().show(getSupportFragmentManager(),"login");
         }
-//        else {
-//            new UserLogoutDialogFragment().show(getSupportFragmentManager(), "logout");
-//        }
+        else {
+            new UserLogoutDialogFragment().show(getSupportFragmentManager(), "logout");
+        }
 
 
         mAdapter = new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.simple_list_item_1, getMessageRef()) {
             @Override
             protected void populateView(View v, Message model, int position) {
-
-                ((TextView) v).setText(model.UUID + "\r\n" + model.Message);
+                ((TextView) v).setText(model.UUID+": "+model.Message);
+                // Log.i("      test",position);
             }
         };
 
         //リストビューにFirebaseのメッセージをいれてる？
-        ListView listview = (ListView) findViewById(R.id.listview);
 
-        listview.setAdapter(mAdapter);                                      //ここでListViewにコメントをセットしてFirebaseにバックアップしてる
+        ListView listview = (ListView) findViewById(R.id.listview);
+        listview.setAdapter(mAdapter);
+
+        //UUIDAdd();
+
     }
 
     @Override
@@ -160,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+
         getMessageRef().push().setValue(new Message(user.getUid(), content)).continueWith(new Continuation<Void, Object>() {
             @Override
             public Object then(@NonNull Task<Void> task) throws Exception {
@@ -194,8 +194,8 @@ public class MainActivity extends AppCompatActivity {
                         String sender = dataSnapshot.child("Message").getValue().toString();
                         String body = dataSnapshot.child("UUID").getValue().toString();
                         Log.d("Firebase", String.format("Message:%s, UUID:%s", sender, body));
-                       // Log.d("Firebase", String.format("wwwwwwwwwwwww:%s", dataSnapshot));
-                       // SnapshotData snapshotData = new SnapshotData();
+                        // Log.d("Firebase", String.format("wwwwwwwwwwwww:%s", dataSnapshot));
+                        // SnapshotData snapshotData = new SnapshotData();
                         //snapshotData.setUuid(dataSnapshot.child("UUID").getValue().toString());
                         //snapshotData.setMessage(dataSnapshot.child("Message").getValue().toString());
                         //arrDataSnapshot.add(snapshotData);
@@ -248,6 +248,7 @@ public class MainActivity extends AppCompatActivity {
         //ここでFirebaseにログイン
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user==null){
+            Log.d("ログインチェック","NotLogin");
             new AlertDialog.Builder(this)
                     .setTitle("エラー")
                     .setMessage("ログインしていません")
