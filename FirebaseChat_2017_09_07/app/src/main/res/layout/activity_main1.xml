@@ -7,7 +7,7 @@
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="0px"
-        android:layout_weight="0.49">
+        android:layout_weight="1">
 
     </ListView>
     <LinearLayout
@@ -30,13 +30,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="roomSEND" />
+            android:text="友達1" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="friendSEND" />
+            android:text="友達2" />
     </LinearLayout>
 </LinearLayout>
