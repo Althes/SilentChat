@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.Continuation;
@@ -34,7 +33,6 @@ public class UserLoginDialogFragment extends DialogFragment{
                             @Override
                             public Object then(@NonNull Task<AuthResult> task) throws Exception {
                                 if (!task.isSuccessful()) {
-                                    Log.d("FirebaseChat", "error", task.getException());
                                     //ここからエラーメソッド呼び出した方がよさげ
 
                                 }
