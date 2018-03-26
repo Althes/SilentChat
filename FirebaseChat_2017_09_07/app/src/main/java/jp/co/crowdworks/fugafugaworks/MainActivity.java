@@ -326,7 +326,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             protected void populateView(View v, Message model, int position) {
 
-                ((TextView) v).setText(model.Sender+": "+model.Message);
+                ((TextView) v).setText(model.UUID+": "+model.Message);
             }
         };
     }
