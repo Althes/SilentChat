@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,6 +67,22 @@ public class Friend_Lista extends AppCompatActivity {
 
         ListView listview = (ListView) findViewById(R.id.listview_friend);
         listview.setAdapter(uAdapter);
+
+        // リスト項目をクリックした時の処理
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            /**
+             * @param parent ListView
+             * @param view 選択した項目
+             * @param position 選択した項目の添え字
+             * @param id 選択した項目のID
+             */
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // 選択した項目をTextViewにキャストした後、Stringにキャストする
+                String selectedItem = (String)((TextView) view).getText();
+                Toast toast = Toast.makeText(Friend_Lista.this, selectedItem, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
     }
 
     public  void buttan(){
