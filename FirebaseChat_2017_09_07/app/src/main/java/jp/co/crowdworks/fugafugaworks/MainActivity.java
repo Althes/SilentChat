@@ -36,7 +36,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseListAdapter<Message> mAdapter;
     private FirebaseListAdapter<Message> tAdapter;
     private FirebaseListAdapter<Users> uAdapter;
+<<<<<<< HEAD
     ArrayList<SnapshotData> arrDataSnapshot = new ArrayList<SnapshotData>();
+=======
+
+
+   ArrayList<SnapshotData> arrDataSnapshot = new ArrayList<SnapshotData>();
+>>>>>>> parent of 120b6dc... Merge pull request #5 from Althes/feature_abe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,8 +235,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         String sender = dataSnapshot.child("Message").getValue().toString();
                         String body = dataSnapshot.child("UUID").getValue().toString();
                         Log.d("Firebase", String.format("Message:%s, UUID:%s", sender, body));
-                        // Log.d("Firebase", String.format("wwwwwwwwwwwww:%s", dataSnapshot));
-                        // SnapshotData snapshotData = new SnapshotData();
+                       // Log.d("Firebase", String.format("wwwwwwwwwwwww:%s", dataSnapshot));
+                       // SnapshotData snapshotData = new SnapshotData();
                         //snapshotData.setUuid(dataSnapshot.child("UUID").getValue().toString());
                         //snapshotData.setMessage(dataSnapshot.child("Message").getValue().toString());
                         //arrDataSnapshot.add(snapshotData);
