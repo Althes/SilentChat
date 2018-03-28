@@ -3,6 +3,7 @@ package jp.co.crowdworks.fugafugaworks;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -12,8 +13,12 @@ import android.widget.Toast;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by 4163211 on 2017/11/16.
@@ -24,9 +29,17 @@ public class Friend_Lista extends AppCompatActivity {
     private static final String USERE_STORE = "users";
     private FirebaseListAdapter<Friend> uAdapter;
 
+    private static final String TAG = "Friend_Lista";
+
     private String uuid;
 
+    Toast toast;
+
     private TextView text;
+
+    String selectedItem = "";
+
+    String FID = "  ";
 
     //データベースメッセージ
     private DatabaseReference getUsersRef() {
@@ -78,15 +91,38 @@ public class Friend_Lista extends AppCompatActivity {
              */
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // 選択した項目をTextViewにキャストした後、Stringにキャストする
-                String selectedItem = (String)((TextView) view).getText();
-                Toast toast = Toast.makeText(Friend_Lista.this, selectedItem, Toast.LENGTH_SHORT);
+                selectedItem = (String)((TextView) view).getText();
+
+
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference ref = database.getReference();
+
+                // TODO フレンドIDを取得する
+                Query query = ref.child("users").child(uuid).child("friend_ID").child(selectedItem).child("friendID");
+                query.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // ユーザ名取得
+                        String myName = dataSnapshot.getValue().toString();
+                        Log.i(TAG, "MyName: " + dataSnapshot + "wwwwwwwwwwwwwwwwwwwwwww"+myName);
+                        FID = myName;
+
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+                
+                toast = Toast.makeText(Friend_Lista.this, FID, Toast.LENGTH_SHORT);
                 toast.show();
+
             }
         });
     }
 
     public  void buttan(){
-
         findViewById(R.id.button001).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +134,4 @@ public class Friend_Lista extends AppCompatActivity {
             }
         });
     }
-
-
 }
