@@ -27,6 +27,10 @@ public class UserLoginDialogFragment extends DialogFragment{
                     public void onClick(DialogInterface dialog, int which) {
                         String email = getTextString(R.id.txt_email);
                         String password = getTextString(R.id.txt_password);
+                        String username = getTextString(R.id.txt_username);
+
+
+
                         //入力ボックスが空以外なら通す
                         if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) return;
                         //ここでログインをしている

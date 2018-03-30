@@ -107,11 +107,13 @@ public class Search_Friend extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(sender != "  ") {
-                    getUsersRef().child(uuid).child("friend").child(idtext).setValue(new Search(sender));//検索した人をフレンドに加える
-                    getUsersRef().child(uuid).child("friend_ID").child(sender).setValue(new Friend_id(idtext));
+                    getUsersRef().child(uuid).child("friend").child(idtext).setValue(new Search(sender,idtext));//検索した人をフレンドに加える
+                    //getUsersRef().child(uuid).child("friend_ID").child(sender).setValue(new Friend_id(idtext));
 
                     //p48LnTPoSJQLag8NjUuNc1BvUTO2
                     //eRFfAVDJy4fPN8aws7t6FF16JHJ2
+                    //VbFsnLcFc5UH5zDgWLZ6vhvJYNI3
+
                 }
             }
         });

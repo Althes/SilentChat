@@ -3,7 +3,6 @@ package jp.co.crowdworks.fugafugaworks;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -13,12 +12,8 @@ import android.widget.Toast;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by 4163211 on 2017/11/16.
@@ -68,11 +63,25 @@ public class Friend_Lista extends AppCompatActivity {
         super.onResume();
 
 
-        uAdapter = new FirebaseListAdapter<Friend>(this, Friend.class, android.R.layout.simple_list_item_1, getUsersRef().child(uuid).child("friend")) {
+
+        //uAdapter = new FirebaseListAdapter<Friend>(this, Friend.class,android.R.layout.simple_list_item_1, getUsersRef().child(uuid).child("friend")) {
+
+        uAdapter = new FirebaseListAdapter<Friend>(this, Friend.class, R.layout.frend_list_item, getUsersRef().child(uuid).child("friend")) {
             @Override
-            protected void populateView(View v, Friend model, int position) {
-                ((TextView) v).setText(model.FName);
-                // Log.i("      test",position);
+            protected void populateView(View v, Friend friend, int position) {
+                //((TextView) v).setText(model.FName);
+                TextView tvName = (TextView)v.findViewById(R.id.tvName);
+                tvName.setText(friend.getFName());
+
+                TextView tvId = (TextView)v.findViewById(R.id.tvId);
+                tvId.setText(friend.getFriendId());
+
+
+//                Object a = uAdapter.getItem(position);
+//                Log.d("www", ""+a.toString());
+
+
+                 //Log.i("      qwer",friend.getFriendId().toString());
             }
         };
 
@@ -91,10 +100,13 @@ public class Friend_Lista extends AppCompatActivity {
              */
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // 選択した項目をTextViewにキャストした後、Stringにキャストする
-                selectedItem = (String)((TextView) view).getText();
+                //selectedItem = (String)((TextView) view).ge();
 
+                TextView tvId = (TextView)view.findViewById(R.id.tvId);
+                TextView tvName = (TextView)view.findViewById(R.id.tvName);
 
-
+                selectedItem = tvName.getText().toString();
+                /*
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference ref = database.getReference();
 
@@ -104,9 +116,9 @@ public class Friend_Lista extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // ユーザ名取得
-                        String myName = dataSnapshot.getValue().toString();
-                        Log.i(TAG, "MyName: " + dataSnapshot + "wwwwwwwwwwwwwwwwwwwwwww"+myName);
-                        FID = myName;
+                        FID  = dataSnapshot.getValue().toString();
+
+                        Log.i(TAG, "MyName: " + dataSnapshot + "wwwwwwwwwwwwwwwwwwwwwww  "+FID);
 
 
                     }
@@ -114,9 +126,12 @@ public class Friend_Lista extends AppCompatActivity {
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
-                
-                toast = Toast.makeText(Friend_Lista.this, FID, Toast.LENGTH_SHORT);
-                toast.show();
+                */
+
+               // toast = Toast.makeText(Friend_Lista.this, FID, Toast.LENGTH_SHORT);
+                //toast.show();
+
+                Toast.makeText(getApplicationContext(),"俺:"+ tvId.getText().toString(), Toast.LENGTH_LONG).show();
 
             }
         });

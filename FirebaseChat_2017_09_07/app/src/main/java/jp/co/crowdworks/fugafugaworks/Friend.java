@@ -5,33 +5,42 @@ package jp.co.crowdworks.fugafugaworks;
  */
 
 public class Friend {
-    public String FName;
-    public String user;
-    public String Rooms;
-    private  String FriendId;
+    private String FName;
+    private String friendID;
+    private String user;
+    private String Rooms;
+
 
     public Friend(){} //これがないとcom.google.firebase.database.DatabaseException: Class jp.co.crowdworks.fugafugaworks.Message is missing a constructor with no arguments みたいなエラーで落ちる
 
-    public Friend( String u ){
-        this.FName = u;
+//    public Friend( String u ){
+//        this.FName = u;
+//    }
+
+    public void setFName(String u){
+        this.FName =u;
+    }
+
+    public String getFName(){
+        return FName;
     }
 
     public void setFriendId(String id){
-        this.FriendId = id;
+        this.friendID = id;
     }
 
     public String getFriendId(){
-        return FriendId;
+        return friendID;
     }
+//
+//    public Friend(String u, String id) {
+//        this.FName = u;
+//        this.FriendId = id;
+//    }
 
-    public Friend(String u, String name) {
-        this.FName = u;
-        this.user = name;
-    }
-
-    public Friend(String u, String name,String roomes) {
-        this.user= u;
-        this.FName = name;
-        this.Rooms = roomes;
-    }
+//    public Friend(String u, String name,String roomes) {
+//        this.user= u;
+//        this.FName = name;
+//        this.Rooms = roomes;
+//    }
 }
