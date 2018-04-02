@@ -24,6 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String MESSAGE_STORE = "messagess";
     private static final String ROOMS_STORE = "rooms";
@@ -33,6 +35,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String friendUid = "OdPB9gmEWpQRViYf9tirlFQcEQE2";
     private String friendUidVb = "VbFsnLcFc5UH5zDgWLZ6vhvJYNI3";
     String sender = "名無し";
+    private static final String TAMESI_STORE = "zentaitamesi";
+    private FirebaseListAdapter<Message> tAdapter;
+    private FirebaseListAdapter<Users> uAdapter;
+    ArrayList<SnapshotData> arrDataSnapshot = new ArrayList<SnapshotData>();
 
 
     @Override
@@ -157,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void sendUserRoom() {
+        
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String roomName = roomCheck(user.getUid(),friendUidVb);
         getRoomsRef().child(roomName).child("member").setValue(new Rooms(user.getUid(),friendUid)).continueWith(new Continuation<Void, Object>() {
