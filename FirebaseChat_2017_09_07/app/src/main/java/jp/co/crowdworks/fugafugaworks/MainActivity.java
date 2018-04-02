@@ -1,7 +1,6 @@
 package jp.co.crowdworks.fugafugaworks;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -18,11 +17,12 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -30,19 +30,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String MESSAGE_STORE = "messagess";
     private static final String ROOMS_STORE = "rooms";
     private static final String USERS_STORE = "users";
+    private FirebaseListAdapter<Message> mAdapter;
     private FirebaseListAdapter<Rooms> rAdapter;
     private String friendUid = "OdPB9gmEWpQRViYf9tirlFQcEQE2";
+    private String friendUidVb = "VbFsnLcFc5UH5zDgWLZ6vhvJYNI3";
+    String sender = "名無し";
     private static final String TAMESI_STORE = "zentaitamesi";
-    private FirebaseListAdapter<Message> mAdapter;
     private FirebaseListAdapter<Message> tAdapter;
     private FirebaseListAdapter<Users> uAdapter;
-<<<<<<< HEAD
     ArrayList<SnapshotData> arrDataSnapshot = new ArrayList<SnapshotData>();
-=======
 
-
-   ArrayList<SnapshotData> arrDataSnapshot = new ArrayList<SnapshotData>();
->>>>>>> parent of 120b6dc... Merge pull request #5 from Althes/feature_abe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         final Button button2 = (Button) findViewById(R.id.button2);
         button2.setOnClickListener(this);
-        serchData();
-        ListaData();
-        setupComposer();
+
+
     }
 
     @Override
@@ -70,22 +66,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             new UserLogoutDialogFragment().show(getSupportFragmentManager(), "logout");
         }
-        getMessage(user.getUid()+"@"+friendUid);
-        mAdapter = new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.simple_list_item_1, getMessageRef()) {
-            @Override
-            protected void populateView(View v, Message model, int position) {
-                ((TextView) v).setText(model.UUID+": "+model.Message);
-                // Log.i("      test",position);
-            }
-        };
-
+        String roomName = roomCheck(user.getUid(),friendUidVb);
+        Log.i("roomeNameuuuiiid",user.getUid());
+        Log.i("roomeNamefriend",friendUidVb);
+        SearchProcess();
+        getMessage(roomName);
         //リストビューにFirebaseのメッセージをいれてる？
-//        ListView mListview = (ListView) findViewById(R.id.listview);
-//        mListview.setAdapter(mAdapter);
-        ListView rListview = (ListView) findViewById(R.id.listview);
-        rListview.setAdapter(rAdapter);
-        //UUIDAdd();
-
+        ListView mListview = (ListView) findViewById(R.id.listview);
+        mListview.setAdapter(mAdapter);
     }
 
     @Override
@@ -108,10 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         return database.getReference(ROOMS_STORE);
     }
-    private DatabaseReference getTamesiRef() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        return database.getReference(TAMESI_STORE);
-    }
+
     //usersというテーブル取得
     private DatabaseReference getUsersRef() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -135,8 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view){
         switch (view.getId()) {
             case R.id.button1:
-//                sendUserRoom();
-                roomCheck("");
+               sendUserRoom();
                 break;
             case R.id.button2:
                 sendUser();
@@ -149,28 +133,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return ((TextView) findViewById(txt)).getText().toString();
     }
 
-    //usersのUUIDのFUUIDに追加
-    private void UUIDAdd(){
-        //getUsersRef().child("test01").child("friend").push().setValue(new Users("test01"));
-        getUsersRef().push().setValue(new Users("MyName"));
-        /*
-        getTamesiRef().push().setValue(new Tamesi("001","test01"));
-        getTamesiRef().push().setValue(new Tamesi("002","test02"));
-        getTamesiRef().push().setValue(new Tamesi("003","test03"));
-        getTamesiRef().push().setValue(new Tamesi("004","test04"));
-        getTamesiRef().push().setValue(new Tamesi("005","test05"));
-        getTamesiRef().push().setValue(new Tamesi("006","test06"));
-        getTamesiRef().push().setValue(new Tamesi("007","test07"));
-        getTamesiRef().push().setValue(new Tamesi("008","test08"));
-        getTamesiRef().push().setValue(new Tamesi("009","test09"));
-        */
-    }
-
     private void sendMessage(String content) {
         //ここでFirebaseにログイン
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        //user.getUid();
+        String roomName = roomCheck(user.getUid(),friendUidVb);
         //ログインできていないときメッセージ送信はしない
         if(user==null){
             Log.d("SendMessage","NotLogin");
@@ -181,40 +147,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .show();
             return;
         }
-        getMessageRef().child(user.getUid() + "@" + friendUid).push().setValue(new Message(user.getUid(), content)).continueWith(new Continuation<Void, Object>() {
-            @Override
-            public Object then(@NonNull Task<Void> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    Log.e("FirebaseChat","error", task.getException());
-                    return null;
-                }
-                ((TextView) findViewById(R.id.txt_content)).setText("");
-                return null;
-            }
-        });
-        getMessageRef().child(friendUid + "@" + user.getUid()).push().setValue(new Message(user.getUid(), content)).continueWith(new Continuation<Void, Object>() {
-            @Override
-            public Object then(@NonNull Task<Void> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    Log.e("FirebaseChat","error", task.getException());
-                    return null;
-                }
-                ((TextView) findViewById(R.id.txt_content)).setText("");
-                return null;
-            }
-        });
-                                                                                                                                 }
 
-        /*
-        for (SnapshotData data : arrDataSnapshot){
-            Log.i("      test",data.getUuid());
-            Log.i("      test2",data.getMessage());
-        }
-        */
-    }
-
-    public void serchData(){
-        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+        getMessageRef().child(roomName).push().setValue(new Message(sender, content)).continueWith(new Continuation<Void, Object>() {
             @Override
             public Object then(@NonNull Task<Void> task) throws Exception {
                 if (!task.isSuccessful()) {
@@ -225,36 +159,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return null;
             }
         });
+
     }
 
     private void sendUserRoom() {
-                Query query = ref.child("message").orderByChild("UUID").equalTo("p48LnTPoSJQLag8NjUuNc1BvUTO2");
-                query.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String previousKey) {
-                        String sender = dataSnapshot.child("Message").getValue().toString();
-                        String body = dataSnapshot.child("UUID").getValue().toString();
-                        Log.d("Firebase", String.format("Message:%s, UUID:%s", sender, body));
-                       // Log.d("Firebase", String.format("wwwwwwwwwwwww:%s", dataSnapshot));
-                       // SnapshotData snapshotData = new SnapshotData();
-                        //snapshotData.setUuid(dataSnapshot.child("UUID").getValue().toString());
-                        //snapshotData.setMessage(dataSnapshot.child("Message").getValue().toString());
-                        //arrDataSnapshot.add(snapshotData);
-
-
-                    }
+        
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        getRoomsRef().child(user.getUid()+"@"+friendUid).child("member").setValue(new Rooms(user.getUid(),friendUid)).continueWith(new Continuation<Void, Object>() {
-            @Override
-            public Object then(@NonNull Task<Void> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    Log.e("FirebaseChat","error01", task.getException());
-                    return null;
-                }
-                return null;
-            }
-        });
-        getRoomsRef().child(friendUid + "@" + user.getUid()).child("member").setValue(new Rooms(user.getUid(),friendUid)).continueWith(new Continuation<Void, Object>() {
+        String roomName = roomCheck(user.getUid(),friendUidVb);
+        getRoomsRef().child(roomName).child("member").setValue(new Rooms(user.getUid(),friendUid)).continueWith(new Continuation<Void, Object>() {
             @Override
             public Object then(@NonNull Task<Void> task) throws Exception {
                 if (!task.isSuccessful()) {
@@ -269,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void sendUser() {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String roomName = roomCheck(user.getUid(),friendUidVb);
         getUsersRef().child(user.getUid()).child("MyName").setValue(new Users("さかわ")).continueWith(new Continuation<Void, Object>() {
             @Override
             public Object then(@NonNull Task<Void> task) throws Exception {
@@ -290,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        getUsersRef().child(user.getUid()).child("rooms").setValue(new UsersR(user.getUid() + "@" + friendUid)).continueWith(new Continuation<Void, Object>() {
+        getUsersRef().child(user.getUid()).child("rooms").setValue(new UsersR(roomName)).continueWith(new Continuation<Void, Object>() {
             @Override
             public Object then(@NonNull Task<Void> task) throws Exception {
                 if (!task.isSuccessful()) {
@@ -301,68 +214,66 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        getUsersRef().child(user.getUid()).child("rooms").setValue(new UsersR( friendUid + "@" + user.getUid())).continueWith(new Continuation<Void, Object>() {
-            @Override
-            public Object then(@NonNull Task<Void> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    Log.e("FirebaseChat","error01", task.getException());
-                    return null;
-                }
-                return null;
-            }
-        });
     }
-
 
     //ルームメンバー
-    public void getRoom(String roomName){
-        rAdapter = new FirebaseListAdapter<Rooms>(this, Rooms.class, android.R.layout.simple_list_item_1, getRoomsRef().child(roomName)) {
-            @Override
-            protected void populateView(View v, Rooms model, int position) {
-                ((TextView) v).setText(model.member01+":"+model.member02);
-            }
-        };
-    }
+//    public void getRoom(String roomName){
+//        rAdapter = new FirebaseListAdapter<Rooms>(this, Rooms.class, android.R.layout.simple_list_item_1, getRoomsRef().child(roomName)) {
+//            @Override
+//            protected void populateView(View v, Rooms model, int position) {
+//                ((TextView) v).setText(model.member01+":"+model.member02);
+//            }
+//        };
+//    }
     //メッセージ取得
     public void getMessage(String roomName){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference();
+
         mAdapter = new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.simple_list_item_1, getMessageRef().child(roomName)) {
             @Override
             protected void populateView(View v, Message model, int position) {
-
-                ((TextView) v).setText(model.Sender+": "+model.Message);
+                ((TextView) v).setText(model.UUID+": "+model.Message);
             }
         };
     }
 
 
 
-    //Friendルームチェック
-    public void roomCheck(String roomName){
-//        Log.i("rooom","getClass:" + getRoomsRef().getClass());
-//        Log.i("rooom","getRef:" + getRoomsRef().getRef());
-//        Log.i("rooom","getKey:" + getRoomsRef().getKey());
-        Log.i("rooom",":" + getRoomsRef().child("rooms"));
-//        Log.i("rooom","getRoot:" + getRoomsRef().getRoot());
-//        Log.i("rooom","getDatabase:" + getRoomsRef().getDatabase());
+    //Friendルームチェック比較
+    public String roomCheck(String myRoom,String fRoom) {
+        Log.i("roomeMyName",myRoom);
+        Log.i("roomeFName",fRoom);
+        int result = myRoom.compareTo(fRoom);
+        String roomName = null;
+        if (result < 0){
+            roomName = myRoom + "@" + fRoom;
+        }else if (result > 0){
+            roomName = fRoom + "@" + myRoom;
+        }else if (result == 0){
+            roomName = myRoom + "@" + fRoom;
+        }
+        Log.i("roomeName",roomName);
+        return roomName;
     }
 
-    public  void ListaData(){
-
-        findViewById(R.id.listabtn).setOnClickListener(new View.OnClickListener() {
+    public  void SearchProcess(){
+        //入力されたユーザIDを取得する
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+         // TODO ユーザ名を取得する
+        Query query = ref.child("users").child(user.getUid()).child("MyName");
+        query.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-
-                //String lista_text = mAdapter.getView().toString();
-                Intent intent = new Intent(getApplication(),Friend_Lista.class);
-                //intent.putExtra("Lista",mAdapter);
-                startActivity(intent);
-
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // ユーザ名取得
+                String myName = dataSnapshot.getValue().toString();
+                sender = myName;
+            }
+            @Override public void onCancelled(DatabaseError databaseError) {
             }
         });
     }
+
     //ログインチェックメソッド
     public void LoginCheck(){
         //ここでFirebaseにログイン
@@ -376,4 +287,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .show();
         }
     }
+
 }
