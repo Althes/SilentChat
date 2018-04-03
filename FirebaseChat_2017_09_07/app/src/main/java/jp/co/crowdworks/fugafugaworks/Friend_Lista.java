@@ -106,32 +106,8 @@ public class Friend_Lista extends AppCompatActivity {
                 TextView tvName = (TextView)view.findViewById(R.id.tvName);
 
                 selectedItem = tvName.getText().toString();
-                /*
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference ref = database.getReference();
 
-                // TODO フレンドIDを取得する
-                Query query = ref.child("users").child(uuid).child("friend_ID").child(selectedItem).child("friendID");
-                query.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // ユーザ名取得
-                        FID  = dataSnapshot.getValue().toString();
-
-                        Log.i(TAG, "MyName: " + dataSnapshot + "wwwwwwwwwwwwwwwwwwwwwww  "+FID);
-
-
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
-                */
-
-               // toast = Toast.makeText(Friend_Lista.this, FID, Toast.LENGTH_SHORT);
-                //toast.show();
-
-                Toast.makeText(getApplicationContext(),"俺:"+ tvId.getText().toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"ID:     "+ tvId.getText().toString(), Toast.LENGTH_LONG).show();
 
             }
         });

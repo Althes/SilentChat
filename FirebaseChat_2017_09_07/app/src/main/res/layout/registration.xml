@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="email"/>
+            android:text="Email"/>
         <EditText
             android:id="@+id/txt_email"
             android:layout_width="match_parent"
@@ -22,12 +22,22 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="password"/>
+            android:text="Password"/>
         <EditText
             android:id="@+id/txt_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Myname"/>
+        <EditText
+            android:id="@+id/txt_myname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"/>
 
     </LinearLayout>
 
