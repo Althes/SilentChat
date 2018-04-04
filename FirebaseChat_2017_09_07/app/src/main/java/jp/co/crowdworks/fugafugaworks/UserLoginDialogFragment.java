@@ -26,7 +26,7 @@ public class UserLoginDialogFragment extends DialogFragment{
                     public void onClick(DialogInterface dialog, int which) {
                         String email = getTextString(R.id.txt_email);
                         String password = getTextString(R.id.txt_password);
-                       // String username = getTextString(R.id.txt_username);
+
 
 
 

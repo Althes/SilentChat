@@ -15,22 +15,10 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 //新規登録
 public class UserRegistrationDialogFragment extends DialogFragment {
-    private static final String USERE_STORE = "users";
-    private String uuid;
-    String myname;
 
-
-    //データベースメッセージ
-    private DatabaseReference getUsersRef() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        return database.getReference(USERE_STORE);
-    }
 
     @NonNull
     @Override
@@ -38,24 +26,14 @@ public class UserRegistrationDialogFragment extends DialogFragment {
 
 
         return new AlertDialog.Builder(getContext())
-                .setView(R.layout.registration)
-                .setPositiveButton("Register", new DialogInterface.OnClickListener() {
+                .setView(R.layout.input_id_pass)
+                //.setPositiveButton("Register", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Next", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String email = getTextString(R.id.txt_email);
                         String password = getTextString(R.id.txt_password);
-                        myname = getTextString(R.id.txt_myname);
-
-
-
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                        if(TextUtils.isEmpty(myname))
-
-                        uuid = user.getUid().toString();
-
-
 
                         if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) return;
 
@@ -68,6 +46,7 @@ public class UserRegistrationDialogFragment extends DialogFragment {
                                 return null;
                             }
                         });
+                        new UserMyNameDialogFragment().show(getFragmentManager(), "next");
                     }
 
                 })
@@ -78,7 +57,5 @@ public class UserRegistrationDialogFragment extends DialogFragment {
         return ((TextView) getDialog().findViewById(txt)).getText().toString();
     }
 
-    public void setphut(){
-        //getUsersRef().child("users").child(uuid).setValue(new Users(myname));
-    }
+
 }
