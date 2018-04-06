@@ -2,6 +2,7 @@ package jp.co.crowdworks.fugafugaworks;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +40,8 @@ public class Search_Friend extends AppCompatActivity {
     EditText searchid;
     TextView resultid;
     ListView searchlist;
+
+    String check = " ";
 
     private String uuid;
 
@@ -100,6 +104,9 @@ public class Search_Friend extends AppCompatActivity {
 
     }
 
+    //p48LnTPoSJQLag8NjUuNc1BvUTO2
+    //eRFfAVDJy4fPN8aws7t6FF16JHJ2
+    //VbFsnLcFc5UH5zDgWLZ6vhvJYNI3
 
 
     public void TapProcess(){
@@ -108,11 +115,9 @@ public class Search_Friend extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(sender != "  ") {
                     getUsersRef().child(uuid).child("friend").child(idtext).setValue(new Search(sender,idtext));//検索した人をフレンドに加える
-                    //getUsersRef().child(uuid).child("friend_ID").child(sender).setValue(new Friend_id(idtext));
+                    //sender = 検索した名前　idtext = 検索した人のID
 
-                    //p48LnTPoSJQLag8NjUuNc1BvUTO2
-                    //eRFfAVDJy4fPN8aws7t6FF16JHJ2
-                    //VbFsnLcFc5UH5zDgWLZ6vhvJYNI3
+                    Toast.makeText(getApplicationContext(),sender+"さんをフレンドに追加しました。", Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -128,9 +133,13 @@ public class Search_Friend extends AppCompatActivity {
                 //入力されたユーザIDを取得する
                 idtext = searchid.getText().toString();
 
+                if(TextUtils.isEmpty(idtext)) {
+                    Toast.makeText(getApplicationContext(),"IDを入力してください", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference ref = database.getReference();
 
                 // TODO ユーザ名を取得する
@@ -138,9 +147,15 @@ public class Search_Friend extends AppCompatActivity {
                 query.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getValue() == null) {
+                            Toast.makeText(getApplicationContext(),"該当しません。", Toast.LENGTH_LONG).show();
+                            return;
+                        }
                         // ユーザ名取得
                         String myName = dataSnapshot.getValue().toString();
-                        Log.i(TAG, "MyName: " + dataSnapshot + "wwwwwwwwwwwwwwwwwwwwwww"+myName);
+                        //Log.i(TAG, "MyName: " + dataSnapshot + "wwwwwwwwwwwwwwwwwwwwwww"+myName);
+
+                        //if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) return;
 
                         sender = myName;
 
