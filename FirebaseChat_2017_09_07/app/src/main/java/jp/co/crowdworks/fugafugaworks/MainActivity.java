@@ -58,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
         if (user==null) {
             new UserLoginDialogFragment().show(getSupportFragmentManager(),"login");
         }
-/*        else {
+     else {
             new UserLogoutDialogFragment().show(getSupportFragmentManager(), "logout");
         }
-*/
+
 
         mAdapter = new FirebaseListAdapter<Message>(this, Message.class, android.R.layout.simple_list_item_1, getMessageRef()) {
             @Override

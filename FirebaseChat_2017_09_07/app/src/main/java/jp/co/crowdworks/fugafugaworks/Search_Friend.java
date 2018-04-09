@@ -58,8 +58,6 @@ public class Search_Friend extends AppCompatActivity {
         return database.getReference(USERE_STORE);
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState){
         Log.i(TAG,"onCreate");
