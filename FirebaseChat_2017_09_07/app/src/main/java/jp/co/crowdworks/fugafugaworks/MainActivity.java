@@ -42,12 +42,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String tvMyName = "さかわ";
     //22222222222222222222222222222222222222222222222222222222222222222222222222222222
 
-    //333333--ここにフレンドリストからもらったフレンドの名前を入れる--3333333333333333
-    //Friend_ListaクラスのtvMynameと連携させる
-    private String tvFName = "masaya";
-    //33333333333333333333333333333333333333333333333333333333333333333333333333333333
-
-    //TODO-----------------------------------------------------------------
     String sender = "名無し";
     private static final String TAMESI_STORE = "zentaitamesi";
     private FirebaseListAdapter<Message> tAdapter;
@@ -107,9 +101,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void  setFriendUid(String friendUid){
         tvFriendUid = friendUid;
     }
-    public void  setFriendName(String friendName){
-        tvFName = friendName;
-    }
     public void  setMyname(){
         tvMyName = sender;
     }
@@ -155,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.button2:
                 sendUserMyName(tvMyName);
-                sendUserFriendANDRoom(tvFName,tvFriendUid);
+                sendUserFriendANDRoom(tvFriendUid);
                 break;
         }
     }
@@ -208,21 +199,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
-    //TODO ここでユーザーのフレンドとルームを登録している
-    private void sendUserFriendANDRoom(String friendName,String friendUid) {
-        //変数friendUidが登録する名前
+    //TODO ここでユーザーのルームを登録している
+    public void sendUserFriendANDRoom(String friendUid) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String roomName = roomCheck(user.getUid(),friendUid);
-        getUsersRef().child(user.getUid()).child("friend").child(friendName).setValue(new UsersF(friendName)).continueWith(new Continuation<Void, Object>() {
-            @Override
-            public Object then(@NonNull Task<Void> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    Log.e("FirebaseChat","error01", task.getException());
-                    return null;
-                }
-                return null;
-            }
-        });
         //変数roomNameが登録する名前
         getUsersRef().child(user.getUid()).child("rooms").setValue(new UsersR(roomName)).continueWith(new Continuation<Void, Object>() {
             @Override
@@ -254,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void  deleteDatabaseMessage(String friendUid){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String roomName = roomCheck(user.getUid(), friendUid);
-        getMessageRef().child("OdPB9gmEWpQRViYf9tirlFQcEQE2@OdPB9gmEWpQRViYf9tirlFQcEQE2").removeValue();
+        getMessageRef().child(roomName).removeValue();
     }
 
 

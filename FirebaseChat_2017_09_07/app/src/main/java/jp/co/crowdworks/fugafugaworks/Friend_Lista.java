@@ -67,6 +67,12 @@ public class Friend_Lista extends AppCompatActivity {
         listview.setAdapter(uAdapter);
     }
 
+//    TODO MainActivityのルームを送る処理を実行してチャット画面に移動する
+//    mainActivity.sendUserFriendANDRoom(idtext);
+//                    mainActivity.setFriendUid(idtext);
+//    Intent intent = new Intent(Search_Friend.this, MainActivity.class);
+//    startActivity(intent);
+
     public  void buttan(){
 
         findViewById(R.id.button001).setOnClickListener(new View.OnClickListener() {

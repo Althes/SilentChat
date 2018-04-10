@@ -34,6 +34,7 @@ public class Search_Friend extends AppCompatActivity {
     private static final String USERE_STORE = "users";
    // private static final String SEARCH_STONE = "users/";
     private FirebaseListAdapter<Search> uAdapter;
+    private MainActivity mainActivity = new MainActivity();
 
     EditText searchid;
     TextView resultid;
@@ -140,6 +141,7 @@ public class Search_Friend extends AppCompatActivity {
                         sender = myName;
 
                         ListviewProcess(sender);
+
                     }
 
                     @Override
