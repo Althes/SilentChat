@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //リストビューにFirebaseのメッセージをいれてる？
         ListView mListview = (ListView) findViewById(R.id.listview);
         mListview.setAdapter(mAdapter);
-
     }
 
     @Override
