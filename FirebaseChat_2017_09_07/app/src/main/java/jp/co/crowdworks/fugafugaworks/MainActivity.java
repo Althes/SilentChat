@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -66,14 +65,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             new UserLogoutDialogFragment().show(getSupportFragmentManager(), "logout");
         }
-        String roomName = roomCheck(user.getUid(),friendUidVb);
-        Log.i("roomeNameuuuiiid",user.getUid());
-        Log.i("roomeNamefriend",friendUidVb);
-        SearchProcess();
-        getMessage(roomName);
-        //リストビューにFirebaseのメッセージをいれてる？
-        ListView mListview = (ListView) findViewById(R.id.listview);
-        mListview.setAdapter(mAdapter);
+//        String roomName = roomCheck(user.getUid(),friendUidVb);
+//        Log.i("roomeNameuuuiiid",user.getUid());
+//        Log.i("roomeNamefriend",friendUidVb);
+//        SearchProcess();
+//        getMessage(roomName);
+//        //リストビューにFirebaseのメッセージをいれてる？
+//        ListView mListview = (ListView) findViewById(R.id.listview);
+//        mListview.setAdapter(mAdapter);
     }
 
     @Override

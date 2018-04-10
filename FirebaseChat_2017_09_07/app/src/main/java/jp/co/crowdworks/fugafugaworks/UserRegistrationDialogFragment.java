@@ -15,14 +15,21 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
 //新規登録
 public class UserRegistrationDialogFragment extends DialogFragment {
+
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+
         return new AlertDialog.Builder(getContext())
                 .setView(R.layout.input_id_pass)
-                .setPositiveButton("Register", new DialogInterface.OnClickListener() {
+                //.setPositiveButton("Register", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Next", new DialogInterface.OnClickListener() {
+
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String email = getTextString(R.id.txt_email);
@@ -39,7 +46,9 @@ public class UserRegistrationDialogFragment extends DialogFragment {
                                 return null;
                             }
                         });
+                        new UserMyNameDialogFragment().show(getFragmentManager(), "next");
                     }
+
                 })
                 .create();
     }
@@ -47,4 +56,6 @@ public class UserRegistrationDialogFragment extends DialogFragment {
     private String getTextString(@IdRes int txt) {
         return ((TextView) getDialog().findViewById(txt)).getText().toString();
     }
+
+
 }

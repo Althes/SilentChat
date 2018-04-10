@@ -6,7 +6,7 @@ package jp.co.crowdworks.fugafugaworks;
 
 public class Search {
     public String FName;
-    public String user;
+    public String friendID;
     public String Rooms;
 
     public Search(){} //これがないとcom.google.firebase.database.DatabaseException: Class jp.co.crowdworks.fugafugaworks.Message is missing a constructor with no arguments みたいなエラーで落ちる
@@ -17,10 +17,10 @@ public class Search {
 
     public Search(String u, String name) {
         this.FName = u;
-        this.user = name;
+        this.friendID = name;
     }
     public Search(String u, String name,String roomes) {
-        this.user= u;
+        this.friendID = u;
         this.FName = name;
         this.Rooms = roomes;
     }
