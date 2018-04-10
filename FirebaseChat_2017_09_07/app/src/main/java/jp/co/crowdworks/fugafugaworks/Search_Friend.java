@@ -125,7 +125,6 @@ public class Search_Friend extends AppCompatActivity {
     }
 
     public  void SearchProcess(){
-
         findViewById(R.id.searchbutton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
