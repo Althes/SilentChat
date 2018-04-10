@@ -114,10 +114,31 @@ public class Search_Friend extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(sender != "  ") {
-                    getUsersRef().child(uuid).child("friend").child(idtext).setValue(new Search(sender,idtext));//検索した人をフレンドに加える
-                    //sender = 検索した名前　idtext = 検索した人のID
+                    //入力されたユーザIDを取得する
+                    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference ref = database.getReference();
 
-                    Toast.makeText(getApplicationContext(),sender+"さんをフレンドに追加しました。", Toast.LENGTH_LONG).show();
+                    // TODO ユーザ名を取得する
+                    //Query query = ref.child("users").child(idtext).child("MyName");
+                    Query query = ref.child("users").child(uuid).child("friend").child(idtext).child("FName");
+                    query.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() == null) {
+                                getUsersRef().child(uuid).child("friend").child(idtext).setValue(new Search(sender,idtext));//検索した人をフレンドに加える//sender = 検索した名前　idtext = 検索した人のID
+                                Toast.makeText(getApplicationContext(), sender + "さんをフレンドに追加しました。", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            // ユーザ名取得
+                            String ISthere = dataSnapshot.getValue().toString();//引っかかたら入る
+
+                            Toast.makeText(getApplicationContext(),"すでに友達です。", Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
 
                 }
             }
