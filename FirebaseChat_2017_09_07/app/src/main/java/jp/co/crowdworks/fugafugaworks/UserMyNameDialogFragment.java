@@ -2,6 +2,7 @@ package jp.co.crowdworks.fugafugaworks;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -38,13 +39,23 @@ public class UserMyNameDialogFragment extends DialogFragment{
                     public void onClick(DialogInterface dialog, int which) {
                         String myname = getTextString(R.id.txt_name);
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+//                        if(user == null) {
+//                            //Toast.makeText(getApplicationContext(),"ID:     "+ tvId.getText().toString(), Toast.LENGTH_LONG).show();
+//                            Toast.makeText(getActivity(),"userがない", Toast.LENGTH_LONG).show();
+//                            return;
+//                        }
+
                         uuid = user.getUid().toString();
 
 
                         //入力ボックスが空以外なら通す
                         if(TextUtils.isEmpty(myname)) return;
 
-                        getUsersRef().child(uuid).setValue(new Users(myname));//検索した人をフレンドに加える
+                        getUsersRef().child(user.getUid().toString()).child("MyName").setValue(new Users(myname));//検索した人をフレンドに加える
+
+
+                       move();
                     }
                 })
                 .create();
@@ -52,5 +63,11 @@ public class UserMyNameDialogFragment extends DialogFragment{
 
     private String getTextString(@IdRes int txt) {
         return ((TextView) getDialog().findViewById(txt)).getText().toString();
+    }
+
+    public  void move(){
+        Intent intent = new Intent(getActivity(),Friend_Lista.class);
+        startActivity(intent);
+
     }
 }

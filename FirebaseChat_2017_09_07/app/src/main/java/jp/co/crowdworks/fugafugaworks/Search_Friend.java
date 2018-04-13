@@ -3,7 +3,6 @@ package jp.co.crowdworks.fugafugaworks;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -66,7 +65,7 @@ public class Search_Friend extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
-        Log.i(TAG,"onCreate");
+        //Log.i(TAG,"onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_friend);
 
@@ -139,7 +138,6 @@ public class Search_Friend extends AppCompatActivity {
                         public void onCancelled(DatabaseError databaseError) {
                         }
                     });
-
                 }
             }
         });
@@ -163,7 +161,7 @@ public class Search_Friend extends AppCompatActivity {
                 DatabaseReference ref = database.getReference();
 
                 // TODO ユーザ名を取得する
-                Query query = ref.child("users").child(idtext).child("MyName");
+                Query query = ref.child("users").child(idtext).child("MyName").child("MyName");
                 query.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
