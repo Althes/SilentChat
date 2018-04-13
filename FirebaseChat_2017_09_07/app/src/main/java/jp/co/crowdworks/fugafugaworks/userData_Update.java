@@ -36,7 +36,6 @@ public class userData_Update extends AppCompatActivity {
         btnName = (Button) findViewById(R.id.btnUN);
         btnPw = (Button) findViewById(R.id.btnPW);
         txtNm = (TextView) findViewById(R.id.textUserName);//ユーザーの名前
-        txtGm = (TextView) findViewById(R.id.textGmail);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();    //ログインしているか確認
 
