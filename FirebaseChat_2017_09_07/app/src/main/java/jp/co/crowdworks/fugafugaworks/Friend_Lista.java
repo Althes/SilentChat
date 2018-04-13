@@ -34,7 +34,7 @@ public class Friend_Lista extends AppCompatActivity {
 
     String selectedItem = "";
 
-    String FID = "  ";
+    String fID = "  ";
 
     //データベースメッセージ
     private DatabaseReference getUsersRef() {
@@ -108,6 +108,13 @@ public class Friend_Lista extends AppCompatActivity {
                 selectedItem = tvName.getText().toString();
 
                 Toast.makeText(getApplicationContext(),"ID:     "+ tvId.getText().toString(), Toast.LENGTH_LONG).show();
+
+                fID = tvId.getText().toString();
+
+
+                Intent intent = new Intent(getApplication(), MainActivity.class);
+                intent.putExtra("DATA1", fID);
+                startActivity(intent);
 
             }
         });

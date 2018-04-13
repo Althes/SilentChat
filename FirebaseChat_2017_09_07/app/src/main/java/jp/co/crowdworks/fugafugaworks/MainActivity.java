@@ -1,6 +1,7 @@
 package jp.co.crowdworks.fugafugaworks;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -55,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_main);
         setupComposer();
+        Intent intent = getIntent();
+        tvFriendUid = intent.getStringExtra("DATA1");
+        Log.i("DATA1",tvFriendUid);
         final Button button1 = (Button) findViewById(R.id.button1);
         button1.setOnClickListener(this);
 
@@ -239,8 +243,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //Friendルームチェック比較
     public String roomCheck(String myRoom,String fRoom) {
-        Log.i("roomeMyName",myRoom);
-        Log.i("roomeFName",fRoom);
+        
         int result = myRoom.compareTo(fRoom);
         String roomName = null;
         if (result < 0){
@@ -259,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        Query query = ref.child("users").child(user.getUid()).child("MyName");
+        Query query = ref.child("users").child(user.getUid()).child("MyName").child("MyName");
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
