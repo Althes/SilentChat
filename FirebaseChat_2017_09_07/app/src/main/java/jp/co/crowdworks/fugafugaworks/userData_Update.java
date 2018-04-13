@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,6 +48,7 @@ public class userData_Update extends AppCompatActivity {
         }
 
         setNewUserName();
+        setNewPassword();
     }
 
     @Override
@@ -55,7 +57,7 @@ public class userData_Update extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();    //ログインしているか確認
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();    //ログインしているか確認
 
         if (user != null) {
             // TODO ユーザ名を取得する
@@ -86,5 +88,20 @@ public class userData_Update extends AppCompatActivity {
         });
     }
 
+    private void setNewPassword(){
+        findViewById(R.id.btnPW).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();    //ログイン中のユーザーを取得
+                String mailAdress = user.getEmail();                                //ログインしている人のメールアドレスを取得
+
+                Toast.makeText(userData_Update.this, "登録したメールアドレスに変更用のメールを送信しました", Toast.LENGTH_LONG).show();
+
+                auth.sendPasswordResetEmail(mailAdress);            //新しいパスワードに変更するためのメールが取得したメールアドレスに届く
+
+            }
+        });
+    }
 
 }
