@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:text="ユーザーネーム"
-        android:textSize="20dp" />
+        android:textSize="25dp" />
 
     <TextView
         android:id="@+id/textUserName"
@@ -25,54 +25,22 @@
         android:id="@+id/btnUN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="変更"
-        android:layout_gravity="right"/>
-
-    <TextView
-        android:id="@+id/textGMTitle"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Gmail"
-        android:textSize="20dp" />
-
-    <TextView
-        android:id="@+id/textGmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="TextGM"
-        android:textAlignment="center"
-        android:textSize="24sp" />
-
-    <Button
-        android:id="@+id/btnGM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="変更"
+        android:text="名前変更"
         android:layout_gravity="right"/>
 
     <TextView
         android:id="@+id/textPWTitle"
-        android:layout_width="200dp"
+        android:layout_width="235dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:text="パスワード"
-        android:textSize="20dp" />
-
-    <TextView
-        android:id="@+id/textPassWord"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="TextPW"
-        android:textAlignment="center"
-        android:textSize="24sp" />
+        android:textSize="25dp"
+        android:layout_weight="0.03" />
 
     <Button
         android:id="@+id/btnPW"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="変更"
-        android:layout_gravity="right"/>
+        android:layout_gravity="right"
+        android:text="パスワード変更" />
 </LinearLayout>

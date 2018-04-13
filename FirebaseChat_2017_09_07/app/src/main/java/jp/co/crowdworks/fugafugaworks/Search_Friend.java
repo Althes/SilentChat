@@ -114,7 +114,7 @@ public class Search_Friend extends AppCompatActivity {
 
     public  void SearchProcess(){
 
-        findViewById(R.id.searchbutton).setOnClickListener(new View.OnClickListener() {
+                findViewById(R.id.searchbutton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -126,8 +126,8 @@ public class Search_Friend extends AppCompatActivity {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference ref = database.getReference();
 
-                // TODO ユーザ名を取得する
-                Query query = ref.child("users").child(idtext).child("MyName");
+                //TODO ユーザ名を取得する
+                Query query = ref.child("users").child(idtext).child("MyName").child("MyName");
                 query.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
