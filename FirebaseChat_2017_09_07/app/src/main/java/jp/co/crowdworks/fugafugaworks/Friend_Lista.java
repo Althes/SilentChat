@@ -26,6 +26,7 @@ public class Friend_Lista extends AppCompatActivity {
 
     private static final String TAG = "Friend_Lista";
 
+
     private String uuid;
 
     Toast toast;
@@ -48,7 +49,6 @@ public class Friend_Lista extends AppCompatActivity {
         setContentView(R.layout.friend_lista);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         uuid = user.getUid().toString();
         /*
         text = (TextView)findViewById(R.id.textlist);
@@ -110,7 +110,6 @@ public class Friend_Lista extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"ID:     "+ tvId.getText().toString(), Toast.LENGTH_LONG).show();
 
                 fID = tvId.getText().toString();
-
 
                 Intent intent = new Intent(getApplication(), MainActivity.class);
                 intent.putExtra("DATA1", fID);

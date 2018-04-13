@@ -36,7 +36,7 @@ public class Search_Friend extends AppCompatActivity {
     private static final String USERE_STORE = "users";
    // private static final String SEARCH_STONE = "users/";
     private FirebaseListAdapter<Search> uAdapter;
-    private MainActivity mainActivity = new MainActivity();
+    private MainActivity mainActivity;
 
     EditText searchid;
     TextView resultid;
@@ -72,6 +72,8 @@ public class Search_Friend extends AppCompatActivity {
         setContentView(R.layout.search_friend);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        mainActivity = new MainActivity();
 
         uuid = user.getUid().toString();
 
@@ -119,6 +121,8 @@ public class Search_Friend extends AppCompatActivity {
                     //sender = 検索した名前　idtext = 検索した人のID
 
                     Toast.makeText(getApplicationContext(),sender+"さんをフレンドに追加しました。", Toast.LENGTH_LONG).show();
+
+                    mainActivity.sendUserRoom(idtext);
 
                 }
             }

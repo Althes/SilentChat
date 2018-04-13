@@ -149,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.button2:
                 sendUserMyName(tvMyName);
-                sendUserFriendANDRoom(tvFriendUid);
                 break;
         }
     }
@@ -203,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
     //TODO ここでユーザーのルームを登録している
-    public void sendUserFriendANDRoom(String friendUid) {
+    public void sendUserRoom(String friendUid) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String roomName = roomCheck(user.getUid(),friendUid);
         //変数roomNameが登録する名前
@@ -243,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //Friendルームチェック比較
     public String roomCheck(String myRoom,String fRoom) {
-        
+
         int result = myRoom.compareTo(fRoom);
         String roomName = null;
         if (result < 0){
