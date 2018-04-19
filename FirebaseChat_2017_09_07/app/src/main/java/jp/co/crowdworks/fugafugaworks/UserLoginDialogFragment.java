@@ -10,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
@@ -50,20 +51,43 @@ public class UserLoginDialogFragment extends DialogFragment{
                             }
                         });
 
-                       // new Thread()
+//
+//                        //1秒待ってから描画データを更新する
+//                        new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//
+//                                // DBが更新されるまで待機
+//                                try {
+//                                    Thread.sleep(5000);
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//                                if(user == null) {
+//                                    Toast.makeText(getActivity(),"ログインできませんでした。", Toast.LENGTH_LONG).show();
+//                                    return;
+//                                }
+//                            }
+//                        }).start();
 
 
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if(user == null) {
+                            Toast.makeText(getActivity(),"ログインできませんでした。", Toast.LENGTH_LONG).show();
+                            return;
+                        }
 
-
-                        move();
                     }
                 })
-                .setNeutralButton("会員登録", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        new UserRegistrationDialogFragment().show(getFragmentManager(), "register");
-                    }
-                })
+//
+//                .setNeutralButton("会員登録", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        new UserRegistrationDialogFragment().show(getFragmentManager(), "register");
+//                    }
+//                })
                 .create();
     }
 
@@ -76,6 +100,8 @@ public class UserLoginDialogFragment extends DialogFragment{
         startActivity(intent);
 
     }
+
+
 
 
 }
