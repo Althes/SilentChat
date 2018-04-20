@@ -10,7 +10,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
@@ -72,12 +71,12 @@ public class UserLoginDialogFragment extends DialogFragment{
 //                            }
 //                        }).start();
 
-
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        if(user == null) {
-                            Toast.makeText(getActivity(),"ログインできませんでした。", Toast.LENGTH_LONG).show();
-                            return;
-                        }
+//
+//                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//                        if(user == null) {
+//                            Toast.makeText(getActivity(),"ログインできませんでした。", Toast.LENGTH_LONG).show();
+//                            return;
+//                        }
 
                     }
                 })
