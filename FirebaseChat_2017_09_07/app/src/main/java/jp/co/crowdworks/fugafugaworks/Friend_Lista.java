@@ -36,6 +36,8 @@ public class Friend_Lista extends AppCompatActivity {
     String selectedItem = "";
 
     String fID = "  ";
+    private Utils mUtils;
+
 
     //データベースメッセージ
     private DatabaseReference getUsersRef() {
@@ -49,6 +51,8 @@ public class Friend_Lista extends AppCompatActivity {
         setContentView(R.layout.friend_lista);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        mUtils = new Utils(Friend_Lista.this);
+
         uuid = user.getUid().toString();
         /*
         text = (TextView)findViewById(R.id.textlist);
@@ -119,11 +123,7 @@ public class Friend_Lista extends AppCompatActivity {
         });
     }
 
-//    TODO MainActivityのルームを送る処理を実行してチャット画面に移動する
-//    mainActivity.sendUserFriendANDRoom(idtext);
-//                    mainActivity.setFriendUid(idtext);
-//    Intent intent = new Intent(Search_Friend.this, MainActivity.class);
-//    startActivity(intent);
+
 
     public  void buttan(){
         findViewById(R.id.button001).setOnClickListener(new View.OnClickListener() {

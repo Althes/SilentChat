@@ -25,13 +25,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String MESSAGE_STORE = "messagess";
     private static final String ROOMS_STORE = "rooms";
     private static final String USERS_STORE = "users";
     private FirebaseListAdapter<Message> mAdapter;
+    private Utils mUtils;
+    private String uuid;
+
     //TODO----------------------------------------------------------------
 
     //1111111--ここにフレンドリストからもらったフレンドIDをもらっていれる--11111111111
@@ -44,10 +45,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //22222222222222222222222222222222222222222222222222222222222222222222222222222222
 
     String sender = "名無し";
-    private static final String TAMESI_STORE = "zentaitamesi";
-    private FirebaseListAdapter<Message> tAdapter;
-    private FirebaseListAdapter<Users> uAdapter;
-    ArrayList<SnapshotData> arrDataSnapshot = new ArrayList<SnapshotData>();
 
 
     @Override
@@ -56,15 +53,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_main);
         setupComposer();
+
+
+        mUtils = new Utils(MainActivity.this);
+
         Intent intent = getIntent();
         tvFriendUid = intent.getStringExtra("DATA1");
         Log.i("DATA1",tvFriendUid);
         final Button button1 = (Button) findViewById(R.id.button1);
         button1.setOnClickListener(this);
-
-        final Button button2 = (Button) findViewById(R.id.button2);
-        button2.setOnClickListener(this);
-
 
     }
 
@@ -145,9 +142,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view){
         switch (view.getId()) {
             case R.id.button1:
-                deleteDatabaseMessage(tvFriendUid);
+//                deleteDatabaseMessage(tvFriendUid);
+                mUtils.progressShow("通信中", "描画データを読み込み中です");
+                MyThread myThread = new MyThread();
+                myThread.target = mUtils.mProgressDialog;
+                myThread.uuid = uuid;
+                myThread.start();
                 break;
             case R.id.button2:
+                uuid = "konnni";
                 sendUserMyName(tvMyName);
                 break;
         }
