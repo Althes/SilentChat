@@ -15,6 +15,6 @@
     <item
         android:id="@+id/action_mainroom"
         android:orderInCategory="3"
-        android:title="チャットルーム"
+        android:title="マイページ"
         app:showAsAction="never" />
 </menu>

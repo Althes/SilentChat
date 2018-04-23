@@ -89,33 +89,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.action_searchfrends:
                 Intent intent2= new Intent(getApplication(),Search_Friend.class);
-                //intent.putExtra("Lista",mAdapter);
                 startActivity(intent2);
                 break;
             default:
-                Intent intent3= new Intent(getApplication(),MainActivity.class);
+                Intent intent3= new Intent(getApplication(),userData_Update.class);
                 startActivity(intent3);
         }
         return true;
     }
-
-  /*  public void optionlist(MenuItem menuItem){
-        switch (menuItem.getItemId()) {
-            case R.id.action_frend:
-                Intent intent = new Intent(getApplication(),Friend_Lista.class);
-                startActivity(intent);
-                break;
-            case R.id.action_searchfrends:
-                Intent intent2= new Intent(getApplication(),Search_Friend.class);
-                //intent.putExtra("Lista",mAdapter);
-                startActivity(intent2);
-                break;
-            default:
-                Intent intent3= new Intent(getApplication(),MainActivity.class);
-                startActivity(intent3);
-        }
-    }
-*/
 
     @Override
     protected void onResume() {
@@ -333,8 +314,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
-
-
 
     //ログインチェックメソッド
     public void LoginCheck(){

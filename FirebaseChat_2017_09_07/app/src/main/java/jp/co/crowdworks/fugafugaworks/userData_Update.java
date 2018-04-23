@@ -35,17 +35,8 @@ public class userData_Update extends AppCompatActivity {
 
         btnName = (Button) findViewById(R.id.btnUN);
         btnPw = (Button) findViewById(R.id.btnPW);
-        txtNm = (TextView) findViewById(R.id.textUserName);//ユーザーの名前
+        txtNm = (TextView) findViewById(R.id.textUserName);                 //ユーザーの名前
         txtid = (TextView) findViewById(R.id.textID);
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();    //ログインしているか確認
-
-        if (user==null) {
-            new UserLoginDialogFragment().show(getSupportFragmentManager(),"login");
-        }
-        else {
-            new UserLogoutDialogFragment().show(getSupportFragmentManager(), "logout");
-        }
 
         setNewUserName();
         setNewPassword();

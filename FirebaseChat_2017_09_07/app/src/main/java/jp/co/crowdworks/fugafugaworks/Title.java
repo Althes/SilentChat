@@ -29,13 +29,6 @@ public class Title extends AppCompatActivity {
         //ここログイン
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-//
-//        if (user == null) {
-//            new UserLoginDialogFragment().show(getSupportFragmentManager(), "login");
-//        } else {
-//            new UserLogoutDialogFragment().show(getSupportFragmentManager(), "logout");
-//        }
-
         buttan();
     }
 
