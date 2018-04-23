@@ -8,7 +8,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String MESSAGE_STORE = "messagess";
@@ -46,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     String sender = "名無し";
 
+    ArrayList<SnapshotData> arrDataSnapshot = new ArrayList<SnapshotData>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +73,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    //オプションメニュー作成
+    public boolean onCreateOptionsMenu(Menu menu){
+        //menuにmenu.xmlレイアアウトを適用
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+    @Override
+    //メニュー選択時の処理
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.action_frend:
+                Intent intent = new Intent(getApplication(),Friend_Lista.class);
+                startActivity(intent);
+                break;
+            case R.id.action_searchfrends:
+                Intent intent2= new Intent(getApplication(),Search_Friend.class);
+                //intent.putExtra("Lista",mAdapter);
+                startActivity(intent2);
+                break;
+            default:
+                Intent intent3= new Intent(getApplication(),MainActivity.class);
+                startActivity(intent3);
+        }
+        return true;
+    }
+
+  /*  public void optionlist(MenuItem menuItem){
+        switch (menuItem.getItemId()) {
+            case R.id.action_frend:
+                Intent intent = new Intent(getApplication(),Friend_Lista.class);
+                startActivity(intent);
+                break;
+            case R.id.action_searchfrends:
+                Intent intent2= new Intent(getApplication(),Search_Friend.class);
+                //intent.putExtra("Lista",mAdapter);
+                startActivity(intent2);
+                break;
+            default:
+                Intent intent3= new Intent(getApplication(),MainActivity.class);
+                startActivity(intent3);
+        }
+    }
+*/
+
+    @Override
     protected void onResume() {
         super.onResume();
+
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE);    //スクリーンショット制限
+
         //ここログイン
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
