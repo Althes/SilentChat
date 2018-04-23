@@ -8,6 +8,7 @@ public class Search_Listview {
     private String name;
 
 
+
    public Search_Listview(String name){
        this.name = name;
    }

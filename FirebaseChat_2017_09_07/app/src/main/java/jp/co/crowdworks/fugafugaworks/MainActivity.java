@@ -8,7 +8,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -36,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseListAdapter<Users> uAdapter;
 
 
-   ArrayList<SnapshotData> arrDataSnapshot = new ArrayList<SnapshotData>();
+    ArrayList<SnapshotData> arrDataSnapshot = new ArrayList<SnapshotData>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +54,55 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    //オプションメニュー作成
+    public boolean onCreateOptionsMenu(Menu menu){
+        //menuにmenu.xmlレイアアウトを適用
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+    @Override
+    //メニュー選択時の処理
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.action_frend:
+                Intent intent = new Intent(getApplication(),Friend_Lista.class);
+                startActivity(intent);
+                break;
+            case R.id.action_searchfrends:
+                Intent intent2= new Intent(getApplication(),Search_Friend.class);
+                //intent.putExtra("Lista",mAdapter);
+                startActivity(intent2);
+                break;
+            default:
+                Intent intent3= new Intent(getApplication(),MainActivity.class);
+                startActivity(intent3);
+        }
+        return true;
+    }
+
+  /*  public void optionlist(MenuItem menuItem){
+        switch (menuItem.getItemId()) {
+            case R.id.action_frend:
+                Intent intent = new Intent(getApplication(),Friend_Lista.class);
+                startActivity(intent);
+                break;
+            case R.id.action_searchfrends:
+                Intent intent2= new Intent(getApplication(),Search_Friend.class);
+                //intent.putExtra("Lista",mAdapter);
+                startActivity(intent2);
+                break;
+            default:
+                Intent intent3= new Intent(getApplication(),MainActivity.class);
+                startActivity(intent3);
+        }
+    }
+*/
+
+    @Override
     protected void onResume() {
         super.onResume();
-
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         //ここログイン
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user==null) {
