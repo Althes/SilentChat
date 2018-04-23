@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,9 +24,20 @@ public class Friend_Lista extends AppCompatActivity {
     private static final String USERE_STORE = "users";
     private FirebaseListAdapter<Friend> uAdapter;
 
+    private static final String TAG = "Friend_Lista";
+
+
     private String uuid;
 
+    Toast toast;
+
     private TextView text;
+
+    String selectedItem = "";
+
+    String fID = "  ";
+    private Utils mUtils;
+
 
     //データベースメッセージ
     private DatabaseReference getUsersRef() {
@@ -38,6 +51,7 @@ public class Friend_Lista extends AppCompatActivity {
         setContentView(R.layout.friend_lista);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        mUtils = new Utils(Friend_Lista.this);
 
         uuid = user.getUid().toString();
         /*
@@ -53,11 +67,25 @@ public class Friend_Lista extends AppCompatActivity {
         super.onResume();
 
 
-        uAdapter = new FirebaseListAdapter<Friend>(this, Friend.class, android.R.layout.simple_list_item_1, getUsersRef().child(uuid).child("friend")) {
+
+        //uAdapter = new FirebaseListAdapter<Friend>(this, Friend.class,android.R.layout.simple_list_item_1, getUsersRef().child(uuid).child("friend")) {
+
+        uAdapter = new FirebaseListAdapter<Friend>(this, Friend.class, R.layout.frend_list_item, getUsersRef().child(uuid).child("friend")) {
             @Override
-            protected void populateView(View v, Friend model, int position) {
-                ((TextView) v).setText(model.FName);
-                // Log.i("      test",position);
+            protected void populateView(View v, Friend friend, int position) {
+                //((TextView) v).setText(model.FName);
+                TextView tvName = (TextView)v.findViewById(R.id.tvName);
+                tvName.setText(friend.getFName());
+
+                TextView tvId = (TextView)v.findViewById(R.id.tvId);
+                tvId.setText(friend.getFriendId());
+
+
+//                Object a = uAdapter.getItem(position);
+//                Log.d("www", ""+a.toString());
+
+
+                 //Log.i("      qwer",friend.getFriendId().toString());
             }
         };
 
@@ -65,10 +93,39 @@ public class Friend_Lista extends AppCompatActivity {
 
         ListView listview = (ListView) findViewById(R.id.listview_friend);
         listview.setAdapter(uAdapter);
+
+        // リスト項目をクリックした時の処理
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            /**
+             * @param parent ListView
+             * @param view 選択した項目
+             * @param position 選択した項目の添え字
+             * @param id 選択した項目のID
+             */
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // 選択した項目をTextViewにキャストした後、Stringにキャストする
+                //selectedItem = (String)((TextView) view).ge();
+
+                TextView tvId = (TextView)view.findViewById(R.id.tvId);
+                TextView tvName = (TextView)view.findViewById(R.id.tvName);
+
+                selectedItem = tvName.getText().toString();
+
+                Toast.makeText(getApplicationContext(),"ID:     "+ tvId.getText().toString(), Toast.LENGTH_LONG).show();
+
+                fID = tvId.getText().toString();
+
+                Intent intent = new Intent(getApplication(), MainActivity.class);
+                intent.putExtra("DATA1", fID);
+                startActivity(intent);
+
+            }
+        });
     }
 
-    public  void buttan(){
 
+
+    public  void buttan(){
         findViewById(R.id.button001).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,6 +137,4 @@ public class Friend_Lista extends AppCompatActivity {
             }
         });
     }
-
-
 }

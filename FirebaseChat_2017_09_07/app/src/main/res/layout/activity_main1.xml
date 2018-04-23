@@ -7,7 +7,7 @@
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="0px"
-        android:layout_weight="0.49">
+        android:layout_weight="1">
 
     </ListView>
     <LinearLayout
@@ -18,26 +18,25 @@
             android:id="@+id/txt_content"
             android:layout_width="0px"
             android:layout_height="match_parent"
-            android:maxLength="50"
             android:layout_weight="1"/>
         <Button
             android:id="@+id/btn_send"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Send"/>
-        
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:orientation="horizontal">
         <Button
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="削除" />
-    </LinearLayout>
+            android:text="友達1" />
 
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="友達2" />
+    </LinearLayout>
 </LinearLayout>

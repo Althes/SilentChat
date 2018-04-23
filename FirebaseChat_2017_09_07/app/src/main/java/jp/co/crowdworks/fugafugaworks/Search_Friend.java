@@ -2,13 +2,14 @@ package jp.co.crowdworks.fugafugaworks;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,10 +35,13 @@ public class Search_Friend extends AppCompatActivity {
     private static final String USERE_STORE = "users";
    // private static final String SEARCH_STONE = "users/";
     private FirebaseListAdapter<Search> uAdapter;
+    private MainActivity mainActivity;
 
     EditText searchid;
     TextView resultid;
     ListView searchlist;
+
+    String check = " ";
 
     private String uuid;
 
@@ -60,11 +64,13 @@ public class Search_Friend extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
-        Log.i(TAG,"onCreate");
+        //Log.i(TAG,"onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_friend);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        mainActivity = new MainActivity();
 
         uuid = user.getUid().toString();
 
@@ -98,6 +104,9 @@ public class Search_Friend extends AppCompatActivity {
 
     }
 
+    //p48LnTPoSJQLag8NjUuNc1BvUTO2
+    //eRFfAVDJy4fPN8aws7t6FF16JHJ2
+    //VbFsnLcFc5UH5zDgWLZ6vhvJYNI3
 
 
     public void TapProcess(){
@@ -105,7 +114,35 @@ public class Search_Friend extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(sender != "  ") {
-                    getUsersRef().child(uuid).child("friend").child(idtext).setValue(new Search(sender));//検索した人をフレンドに加える
+                    //入力されたユーザIDを取得する
+                    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference ref = database.getReference();
+
+                    // TODO ユーザ名を取得する
+                    //Query query = ref.child("users").child(idtext).child("MyName");
+                    Query query = ref.child("users").child(uuid).child("friend").child(idtext).child("FName");
+                    query.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() == null) {
+                                getUsersRef().child(uuid).child("friend").child(idtext).setValue(new Search(sender,idtext));//検索した人をフレンドに加える//sender = 検索した名前　idtext = 検索した人のID
+                                Toast.makeText(getApplicationContext(), sender + "さんをフレンドに追加しました。", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            // ユーザ名取得
+                            String ISthere = dataSnapshot.getValue().toString();//引っかかたら入る
+
+                            Toast.makeText(getApplicationContext(),"すでに友達です。", Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+
+                    mainActivity.sendUserRoom(idtext);
+
+                    mainActivity.sendUserRoom(idtext);
 
                 }
             }
@@ -113,31 +150,42 @@ public class Search_Friend extends AppCompatActivity {
     }
 
     public  void SearchProcess(){
+        findViewById(R.id.searchbutton).setOnClickListener(new View.OnClickListener() {
 
-                findViewById(R.id.searchbutton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 //入力されたユーザIDを取得する
                 idtext = searchid.getText().toString();
 
+                if(TextUtils.isEmpty(idtext)) {
+                    Toast.makeText(getApplicationContext(),"IDを入力してください", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference ref = database.getReference();
 
-                //TODO ユーザ名を取得する
+                // TODO ユーザ名を取得する
                 Query query = ref.child("users").child(idtext).child("MyName").child("MyName");
                 query.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getValue() == null) {
+                            Toast.makeText(getApplicationContext(),"該当しません。", Toast.LENGTH_LONG).show();
+                            return;
+                        }
                         // ユーザ名取得
                         String myName = dataSnapshot.getValue().toString();
-                        Log.i(TAG, "MyName: " + dataSnapshot + "wwwwwwwwwwwwwwwwwwwwwww"+myName);
+                        //Log.i(TAG, "MyName: " + dataSnapshot + "wwwwwwwwwwwwwwwwwwwwwww"+myName);
+
+                        //if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) return;
 
                         sender = myName;
 
                         ListviewProcess(sender);
+
                     }
 
                     @Override
