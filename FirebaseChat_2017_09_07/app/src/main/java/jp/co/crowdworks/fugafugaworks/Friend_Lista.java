@@ -26,6 +26,7 @@ public class Friend_Lista extends AppCompatActivity {
 
     private static final String TAG = "Friend_Lista";
 
+
     private String uuid;
 
     Toast toast;
@@ -34,7 +35,9 @@ public class Friend_Lista extends AppCompatActivity {
 
     String selectedItem = "";
 
-    String FID = "  ";
+    String fID = "  ";
+    private Utils mUtils;
+
 
     //データベースメッセージ
     private DatabaseReference getUsersRef() {
@@ -48,6 +51,7 @@ public class Friend_Lista extends AppCompatActivity {
         setContentView(R.layout.friend_lista);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        mUtils = new Utils(Friend_Lista.this);
 
         uuid = user.getUid().toString();
         /*
@@ -109,9 +113,17 @@ public class Friend_Lista extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(),"ID:     "+ tvId.getText().toString(), Toast.LENGTH_LONG).show();
 
+                fID = tvId.getText().toString();
+
+                Intent intent = new Intent(getApplication(), MainActivity.class);
+                intent.putExtra("DATA1", fID);
+                startActivity(intent);
+
             }
         });
     }
+
+
 
     public  void buttan(){
         findViewById(R.id.button001).setOnClickListener(new View.OnClickListener() {
