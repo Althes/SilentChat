@@ -140,6 +140,7 @@ public class Search_Friend extends AppCompatActivity {
                     });
 
                     mainActivity.sendUserRoom(idtext);
+
                 }
             }
         });
