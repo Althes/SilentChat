@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 //新規登録
 public class UserRegistrationDialogFragment extends DialogFragment {
@@ -32,6 +33,8 @@ public class UserRegistrationDialogFragment extends DialogFragment {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         String email = getTextString(R.id.txt_email);
                         String password = getTextString(R.id.txt_password);
 
@@ -41,21 +44,33 @@ public class UserRegistrationDialogFragment extends DialogFragment {
                             @Override
                             public Object then(@NonNull Task<AuthResult> task) throws Exception {
                                 if (!task.isSuccessful()) {
-                                    Toast.makeText(getContext(),"signup error!",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(),"signup error!", Toast.LENGTH_SHORT).show();
                                 }
+
                                 return null;
                             }
                         });
+
+//                        if(user != null) {
+//                            new UserMyNameDialogFragment().show(getFragmentManager(), "next");
+//                            //Toast.makeText(getApplicationContext(),"ID:     "+ tvId.getText().toString(), Toast.LENGTH_LONG).show();
+//                            Toast.makeText(getActivity(),"userがない", Toast.LENGTH_LONG).show();
+//                            return;
+//                        }else {
+//                            new UserRegistrationDialogFragment().show(getFragmentManager(), "register");
+//                            //return;
+//                        }
+
+
                         new UserMyNameDialogFragment().show(getFragmentManager(), "next");
                     }
-
                 })
                 .create();
+
     }
+
 
     private String getTextString(@IdRes int txt) {
         return ((TextView) getDialog().findViewById(txt)).getText().toString();
     }
-
-
 }
