@@ -43,4 +43,23 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:text="パスワード変更" />
+
+    <TextView
+        android:id="@+id/textidTitle"
+        android:layout_width="235dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="ユーザーID"
+        android:textSize="25dp"
+        android:layout_weight="0.03" />
+
+    <TextView
+        android:id="@+id/textID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="TextView"
+        android:textSize="22dp"/>
+
+
 </LinearLayout>

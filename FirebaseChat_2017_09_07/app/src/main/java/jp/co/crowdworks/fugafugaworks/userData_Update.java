@@ -25,7 +25,7 @@ public class userData_Update extends AppCompatActivity {
     Button btnName;
     Button btnPw;
     TextView txtNm;
-    TextView txtGm;
+    TextView txtid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,7 @@ public class userData_Update extends AppCompatActivity {
         btnName = (Button) findViewById(R.id.btnUN);
         btnPw = (Button) findViewById(R.id.btnPW);
         txtNm = (TextView) findViewById(R.id.textUserName);//ユーザーの名前
+        txtid = (TextView) findViewById(R.id.textID);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();    //ログインしているか確認
 
@@ -57,6 +58,8 @@ public class userData_Update extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();    //ログインしているか確認
+
+        txtid.setText(user.getUid().toString());
 
         if (user != null) {
             // TODO ユーザ名を取得する
