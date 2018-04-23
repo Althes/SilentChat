@@ -138,6 +138,8 @@ public class Search_Friend extends AppCompatActivity {
                         public void onCancelled(DatabaseError databaseError) {
                         }
                     });
+
+                    mainActivity.sendUserRoom(idtext);
                 }
             }
         });
