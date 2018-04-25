@@ -1,7 +1,10 @@
 package jp.co.crowdworks.fugafugaworks;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -69,6 +72,33 @@ public class userData_Update extends AppCompatActivity {
 
         setNewUserName();
         setNewPassword();
+    }
+
+    @Override
+    //オプションメニュー作成
+    public boolean onCreateOptionsMenu(Menu menu){
+        //menuにmenu.xmlレイアアウトを適用
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+    @Override
+    //メニュー選択時の処理
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.action_frend:
+                Intent intent = new Intent(getApplication(),Friend_Lista.class);
+                startActivity(intent);
+                break;
+            case R.id.action_searchfrends:
+                Intent intent2 = new Intent(getApplication(),Search_Friend.class);
+                startActivity(intent2);
+                break;
+            default:
+                Intent intent3 = new Intent(getApplication(),userData_Update.class);
+                startActivity(intent3);
+                break;
+        }
+        return true;
     }
 
     private void setNewUserName(){

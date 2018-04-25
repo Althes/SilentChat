@@ -107,7 +107,7 @@ public class Search_Friend extends AppCompatActivity {
                 startActivity(intent2);
                 break;
             default:
-                Intent intent3= new Intent(getApplication(),MainActivity.class);
+                Intent intent3= new Intent(getApplication(),userData_Update.class);
                 startActivity(intent3);
         }
         return true;
