@@ -3,13 +3,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="0px"
-        android:layout_weight="0.49">
+        android:layout_weight="1">
 
     </ListView>
     <LinearLayout
@@ -20,30 +18,25 @@
             android:id="@+id/txt_content"
             android:layout_width="0px"
             android:layout_height="match_parent"
-            android:maxLength="50"
             android:layout_weight="1"/>
         <Button
             android:id="@+id/btn_send"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="送信"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:orientation="horizontal">
         <Button
-            android:id="@+id/button"
-            android:layout_width="65dp"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-        <Button
-            android:id="@+id/listabtn"
-            android:layout_width="69dp"
-            android:layout_height="59dp"
-            android:text="フレンド一覧"
-            android:layout_weight="0.10" />
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="メッセージを削除します"/>
+
+
     </LinearLayout>
-        </LinearLayout>
 
 </LinearLayout>

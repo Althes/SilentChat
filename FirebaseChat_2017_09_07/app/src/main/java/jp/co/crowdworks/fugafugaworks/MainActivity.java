@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -67,8 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = getIntent();
         tvFriendUid = intent.getStringExtra("DATA1");
         Log.i("DATA1",tvFriendUid);
-        final Button button1 = (Button) findViewById(R.id.button1);
-        button1.setOnClickListener(this);
+       setDeleteButton();
 
     }
 
@@ -88,12 +86,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.action_searchfrends:
-                Intent intent2= new Intent(getApplication(),Search_Friend.class);
+                Intent intent2 = new Intent(getApplication(),Search_Friend.class);
                 startActivity(intent2);
                 break;
-            default:
-                Intent intent3= new Intent(getApplication(),userData_Update.class);
+           default:
+                Intent intent3 = new Intent(getApplication(),userData_Update.class);
                 startActivity(intent3);
+                break;
         }
         return true;
     }
@@ -181,17 +180,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.button1:
 //                deleteDatabaseMessage(tvFriendUid);
-                mUtils.progressShow("通信中", "描画データを読み込み中です");
-                MyThread myThread = new MyThread();
-                myThread.target = mUtils.mProgressDialog;
-                myThread.uuid = uuid;
-                myThread.start();
+//                mUtils.progressShow("通信中", "描画データを読み込み中です");
+//                MyThread myThread = new MyThread();
+//                myThread.target = mUtils.mProgressDialog;
+//                myThread.uuid = uuid;
+//                myThread.start();
                 break;
-            case R.id.button2:
-                uuid = "konnni";
-                sendUserMyName(tvMyName);
-                break;
+//            case R.id.button2:
+//                uuid = "konnni";
+//                sendUserMyName(tvMyName);
+//                break;
         }
+    }
+
+    private void setDeleteButton() {
+        findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDatabaseMessage(tvFriendUid);
+            }
+        });
     }
 
     //

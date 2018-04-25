@@ -30,7 +30,7 @@ public class Friend_Lista extends AppCompatActivity {
 
     private static final String TAG = "Friend_Lista";
 
-    MainActivity main = new MainActivity();
+
     private String uuid;
 
     Toast toast;

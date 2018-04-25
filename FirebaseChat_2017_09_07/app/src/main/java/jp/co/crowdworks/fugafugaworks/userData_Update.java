@@ -37,9 +37,6 @@ public class userData_Update extends AppCompatActivity {
         btnPw = (Button) findViewById(R.id.btnPW);
         txtNm = (TextView) findViewById(R.id.textUserName);                 //ユーザーの名前
         txtid = (TextView) findViewById(R.id.textID);
-
-        setNewUserName();
-        setNewPassword();
     }
 
     @Override
@@ -48,7 +45,7 @@ public class userData_Update extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();    //ログインしているか確認
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();    //ログインしているか確認
 
         txtid.setText(user.getUid().toString());
 
@@ -69,7 +66,9 @@ public class userData_Update extends AppCompatActivity {
                 }
             });
         }
-        else return;
+
+        setNewUserName();
+        setNewPassword();
     }
 
     private void setNewUserName(){

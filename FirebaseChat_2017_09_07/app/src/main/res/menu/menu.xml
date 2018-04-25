@@ -13,7 +13,7 @@
         android:title="友達検索"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_mainroom"
+        android:id="@+id/action_myroom"
         android:orderInCategory="3"
         android:title="マイページ"
         app:showAsAction="never" />
