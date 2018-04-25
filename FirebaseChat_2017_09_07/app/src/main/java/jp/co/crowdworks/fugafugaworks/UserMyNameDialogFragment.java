@@ -47,32 +47,6 @@ public class UserMyNameDialogFragment extends DialogFragment{
 
                         if(TextUtils.isEmpty(myname)) return;
 
-//
-//                         //1秒待ってから描画データを更新する
-//                        new Thread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//
-//                                // DBが更新されるまで待機
-//                                try {
-//                                    Thread.sleep(5000);
-//                                } catch (Exception e) {
-//                                    e.printStackTrace();
-//                                }
-//
-//
-//                                //入力ボックスが空以外なら通す
-//                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//                                if(user == null) {
-//                                    Toast.makeText(getActivity(), "登録できませんでした。", Toast.LENGTH_LONG).show();
-//                                }else {
-//                                    uuid = user.getUid().toString();
-//                                    getUsersRef().child(user.getUid().toString()).child("MyName").setValue(new Users(myname));//検索した人をフレンドに加える
-//                                }
-//                            }
-//                        }).start();
-
-
 
                         //入力ボックスが空以外なら通す
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

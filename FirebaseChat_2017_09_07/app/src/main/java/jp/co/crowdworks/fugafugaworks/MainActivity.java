@@ -1,6 +1,5 @@
 package jp.co.crowdworks.fugafugaworks;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -70,11 +69,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         //ここログイン
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) {
-            new UserLoginDialogFragment().show(getSupportFragmentManager(), "login");
-        } else {
-            new UserLogoutDialogFragment().show(getSupportFragmentManager(), "logout");
-        }
         //ここで自分の名前とフレンドの名前を送ってABC順で比較してルーム名を作る
         //ABBBBC と　ABBBBAだったら
         //ABBBBA@ABBBBC
@@ -165,16 +159,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //ここでFirebaseにログイン
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String roomName = roomCheck(user.getUid(), friendUid);
-        //ログインできていないときメッセージ送信はしない
-        if(user==null){
-            Log.d("SendMessage","NotLogin");
-            new AlertDialog.Builder(this)
-                    .setTitle("エラー")
-                    .setMessage("ログインしていません")
-                    .setPositiveButton("OK", null)
-                    .show();
-            return;
-        }
 
         getMessageRef().child(roomName).push().setValue(new Message(sender, content)).continueWith(new Continuation<Void, Object>() {
             @Override
@@ -275,22 +259,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override public void onCancelled(DatabaseError databaseError) {
             }
         });
-    }
-
-
-
-    //ログインチェックメソッド
-    public void LoginCheck(){
-        //ここでFirebaseにログイン
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user==null){
-            Log.d("ログインチェック","NotLogin");
-            new AlertDialog.Builder(this)
-                    .setTitle("エラー")
-                    .setMessage("ログインしていません")
-                    .setPositiveButton("OK", null)
-                    .show();
-        }
     }
 
 }
