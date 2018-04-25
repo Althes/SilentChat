@@ -8,8 +8,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String MESSAGE_STORE = "messagess";
@@ -46,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     String sender = "名無し";
 
+    ArrayList<SnapshotData> arrDataSnapshot = new ArrayList<SnapshotData>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +66,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = getIntent();
         tvFriendUid = intent.getStringExtra("DATA1");
         Log.i("DATA1",tvFriendUid);
-        final Button button1 = (Button) findViewById(R.id.button1);
-        button1.setOnClickListener(this);
+       setDeleteButton();
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE);    //スクリーンショット制限
+
         //ここログイン
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         if (user == null) {
             new UserLoginDialogFragment().show(getSupportFragmentManager(), "login");
         } else {
@@ -94,6 +104,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mAdapter = null;
         }
         super.onPause();
+    }
+
+    @Override
+    //オプションメニュー作成
+    public boolean onCreateOptionsMenu(Menu menu){
+        //menuにmenu.xmlレイアアウトを適用
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+    @Override
+    //メニュー選択時の処理
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.action_frend:
+                Intent intent = new Intent(getApplication(),Friend_Lista.class);
+                startActivity(intent);
+                break;
+            case R.id.action_searchfrends:
+                Intent intent2 = new Intent(getApplication(),Search_Friend.class);
+                startActivity(intent2);
+                break;
+            default:
+                Intent intent3 = new Intent(getApplication(),userData_Update.class);
+                startActivity(intent3);
+                break;
+        }
+        return true;
     }
 
     //TODO>>////////////////////////////////////////////////////////
@@ -143,17 +180,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.button1:
 //                deleteDatabaseMessage(tvFriendUid);
-                mUtils.progressShow("通信中", "描画データを読み込み中です");
-                MyThread myThread = new MyThread();
-                myThread.target = mUtils.mProgressDialog;
-                myThread.uuid = uuid;
-                myThread.start();
+//                mUtils.progressShow("通信中", "描画データを読み込み中です");
+//                MyThread myThread = new MyThread();
+//                myThread.target = mUtils.mProgressDialog;
+//                myThread.uuid = uuid;
+//                myThread.start();
                 break;
-            case R.id.button2:
-                uuid = "konnni";
-                sendUserMyName(tvMyName);
-                break;
+//            case R.id.button2:
+//                uuid = "konnni";
+//                sendUserMyName(tvMyName);
+//                break;
         }
+    }
+
+    private void setDeleteButton() {
+        findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDatabaseMessage(tvFriendUid);
+            }
+        });
     }
 
     //
@@ -276,8 +322,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
-
-
 
     //ログインチェックメソッド
     public void LoginCheck(){

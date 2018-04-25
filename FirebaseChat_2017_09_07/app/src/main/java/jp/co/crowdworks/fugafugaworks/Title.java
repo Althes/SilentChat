@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Title extends AppCompatActivity {
 
-    FirebaseUser user;
+    //FirebaseUser user;
 
 
     @Override
@@ -24,17 +24,14 @@ public class Title extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title);
 
+    }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
 
         //ここログイン
-        user = FirebaseAuth.getInstance().getCurrentUser();
-
-//
-//        if (user == null) {
-//            new UserLoginDialogFragment().show(getSupportFragmentManager(), "login");
-//        } else {
-//            new UserLogoutDialogFragment().show(getSupportFragmentManager(), "logout");
-//        }
+        //user = FirebaseAuth.getInstance().getCurrentUser();
 
         buttan();
     }
@@ -50,6 +47,7 @@ public class Title extends AppCompatActivity {
         });
 
         Button btnname = (Button) findViewById(R.id.title_btn02);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if(user == null){
             btnname.setText("ログイン");
@@ -77,6 +75,8 @@ public class Title extends AppCompatActivity {
         findViewById(R.id.title_btn03).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
                 if(user == null){
                     Toast.makeText(getApplicationContext(),"ログインしてください。", Toast.LENGTH_LONG).show();
                     return;

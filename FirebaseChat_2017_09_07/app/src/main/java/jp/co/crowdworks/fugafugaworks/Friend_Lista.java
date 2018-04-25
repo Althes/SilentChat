@@ -3,8 +3,12 @@ package jp.co.crowdworks.fugafugaworks;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,10 +66,39 @@ public class Friend_Lista extends AppCompatActivity {
         buttan();
     }
 
+
+    @Override
+    //オプションメニュー作成
+    public boolean onCreateOptionsMenu(Menu menu){
+        //menuにmenu.xmlレイアアウトを適用
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+    @Override
+    //メニュー選択時の処理
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.action_frend:
+                Intent intent = new Intent(getApplication(),Friend_Lista.class);
+                startActivity(intent);
+                break;
+            case R.id.action_searchfrends:
+                Intent intent2= new Intent(getApplication(),Search_Friend.class);
+                //intent.putExtra("Lista",mAdapter);
+                startActivity(intent2);
+                break;
+            default:
+                Intent intent3= new Intent(getApplication(),userData_Update.class);
+                startActivity(intent3);
+        }
+        return true;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE);
 
 
         //uAdapter = new FirebaseListAdapter<Friend>(this, Friend.class,android.R.layout.simple_list_item_1, getUsersRef().child(uuid).child("friend")) {

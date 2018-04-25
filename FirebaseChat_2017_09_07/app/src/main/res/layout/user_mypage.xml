@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/textNameTitle"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="ユーザーネーム"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/textUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="TextUN"
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/btnUN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="名前変更"
+        android:layout_gravity="right"/>
+
+    <TextView
+        android:id="@+id/textPWTitle"
+        android:layout_width="235dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="パスワード"
+        android:textSize="25dp"
+        android:layout_weight="0.03" />
+
+    <Button
+        android:id="@+id/btnPW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="パスワード変更" />
+
+    <TextView
+        android:id="@+id/textidTitle"
+        android:layout_width="235dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="ユーザーID"
+        android:textSize="25dp"
+        android:layout_weight="0.03" />
+
+    <TextView
+        android:id="@+id/textID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="TextView"
+        android:textSize="22dp"/>
+
+
+</LinearLayout>

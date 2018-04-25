@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_frend"
+        android:orderInCategory="1"
+        android:title="友達一覧"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_searchfrends"
+        android:orderInCategory="2"
+        android:title="友達検索"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_myroom"
+        android:orderInCategory="3"
+        android:title="マイページ"
+        app:showAsAction="never" />
+</menu>
