@@ -1,0 +1,6 @@
+<resources>
+    <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColorPrimary">@android:color/holo_red_light</item>
+    </style>
+
+</resources>

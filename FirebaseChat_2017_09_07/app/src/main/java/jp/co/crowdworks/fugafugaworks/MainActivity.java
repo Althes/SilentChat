@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseListAdapter<Message> mAdapter;
     private String tvFriendUid;
     String sender = "名無し";
+    String fName = "名無し";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setupComposer();
         Intent intent = getIntent();
         tvFriendUid = intent.getStringExtra("DATA1");
-        Log.i("DATA1",tvFriendUid);
+        getFriendName();
         setDeleteButton();
 
     }
@@ -251,9 +252,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void dialog (){
-        new AlertDialog.Builder(MainActivity.this)
-                .setTitle("トークの削除")
-                .setMessage("一度消すと元に戻すことはできません")
+        new AlertDialog.Builder(MainActivity.this,R.style.MyAlertDialogStyle)
+                .setTitle("削除しますか？")
+                .setMessage("*1度消すと元に戻すことはできません")
                 .setPositiveButton("削除", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -266,5 +267,23 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+
+    public void getFriendName(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+
+        Query query = ref.child("users").child(tvFriendUid).child("MyName").child("MyName");
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // ユーザ名取得
+                String fname = dataSnapshot.getValue().toString();
+                setTitle(fname);
+
+            }
+            @Override public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 }
