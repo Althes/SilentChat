@@ -1,14 +1,19 @@
 package jp.co.crowdworks.fugafugaworks;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,54 +29,33 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
     private static final String MESSAGE_STORE = "messagess";
     private static final String ROOMS_STORE = "rooms";
     private static final String USERS_STORE = "users";
     private FirebaseListAdapter<Message> mAdapter;
-    private Utils mUtils;
-    private String uuid;
-
-    //TODO----------------------------------------------------------------
-
-    //1111111--ここにフレンドリストからもらったフレンドIDをもらっていれる--11111111111
-    //Friend_ListaクラスのtvIdと連携させる
-    private String tvFriendUid = "OdPB9gmEWpQRViYf9tirlFQcEQE2";
-    //11111111111111111111111111111111111111111111111111111111111111111111111111111111
-
-    //222222222222--ここに登録画面で設定したマイネームをもらっていれる--22222222222222
-    private String tvMyName = "さかわ";
-    //22222222222222222222222222222222222222222222222222222222222222222222222222222222
-
+    private String tvFriendUid;
     String sender = "名無し";
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         setupComposer();
-
-
-        mUtils = new Utils(MainActivity.this);
-
         Intent intent = getIntent();
         tvFriendUid = intent.getStringExtra("DATA1");
         Log.i("DATA1",tvFriendUid);
-        final Button button1 = (Button) findViewById(R.id.button1);
-        button1.setOnClickListener(this);
+        setDeleteButton();
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE);    //スクリーンショット制限
         //ここログイン
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        //ここで自分の名前とフレンドの名前を送ってABC順で比較してルーム名を作る
-        //ABBBBC と　ABBBBAだったら
-        //ABBBBA@ABBBBC
         String roomName = roomCheck(user.getUid(), tvFriendUid);
         SearchProcess();
         //ルーム名を入れてメッセージ取得
@@ -90,15 +74,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onPause();
     }
 
-    //TODO>>////////////////////////////////////////////////////////
-    //セッター
-    public void  setFriendUid(String friendUid){
-        tvFriendUid = friendUid;
+    @Override
+    //オプションメニュー作成
+    public boolean onCreateOptionsMenu(Menu menu){
+        //menuにmenu.xmlレイアアウトを適用
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
     }
-    public void  setMyname(){
-        tvMyName = sender;
+    @Override
+    //メニュー選択時の処理
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.action_frend:
+                Intent intent = new Intent(getApplication(),Friend_Lista.class);
+                startActivity(intent);
+                break;
+            case R.id.action_searchfrends:
+                Intent intent2 = new Intent(getApplication(),Search_Friend.class);
+                startActivity(intent2);
+                break;
+            default:
+                Intent intent3 = new Intent(getApplication(),userData_Update.class);
+                startActivity(intent3);
+                break;
+        }
+        return true;
     }
-    //TODO<<END/////////////////////////////////////////////////////
 
 
     //messageというテーブル取得
@@ -132,22 +133,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-
-    public void onClick(View view){
-        switch (view.getId()) {
-            case R.id.button1:
-//                deleteDatabaseMessage(tvFriendUid);
-                mUtils.progressShow("通信中", "描画データを読み込み中です");
-                MyThread myThread = new MyThread();
-                myThread.target = mUtils.mProgressDialog;
-                myThread.uuid = uuid;
-                myThread.start();
-                break;
-            case R.id.button2:
-                uuid = "konnni";
-                sendUserMyName(tvMyName);
-                break;
-        }
+    private void setDeleteButton() {
+        findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog();
+            }
+        });
     }
 
     //
@@ -173,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
     }
-    //TODO ここでユーザーの名前を登録している
     //変数myNameが登録する名前
     private void sendUserMyName(String myName) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -188,7 +179,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
-    //TODO ここでユーザーのルームを登録している
     public void sendUserRoom(String friendUid) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String roomName = roomCheck(user.getUid(),friendUid);
@@ -218,11 +208,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    //TODO ここで自分と相手のメッセージをしているルームを消す
     //変数roomNameがルームの名前
-    public void  deleteDatabaseMessage(String friendUid){
+    public void  deleteDatabaseMessage(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String roomName = roomCheck(user.getUid(), friendUid);
+        String roomName = roomCheck(user.getUid(), tvFriendUid);
         getMessageRef().child(roomName).removeValue();
     }
 
@@ -261,4 +250,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    private void dialog (){
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("トークの削除")
+                .setMessage("一度消すと元に戻すことはできません")
+                .setPositiveButton("削除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteDatabaseMessage();
+                    }
+                })
+                .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .show();
+    }
 }

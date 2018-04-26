@@ -7,7 +7,7 @@
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="0px"
-        android:layout_weight="0.49">
+        android:layout_weight="1">
 
     </ListView>
     <LinearLayout
@@ -18,14 +18,12 @@
             android:id="@+id/txt_content"
             android:layout_width="0px"
             android:layout_height="match_parent"
-            android:maxLength="50"
             android:layout_weight="1"/>
         <Button
             android:id="@+id/btn_send"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Send"/>
-
+            android:text="送信"/>
     </LinearLayout>
 
     <LinearLayout
@@ -34,10 +32,11 @@
         android:orientation="horizontal">
         <Button
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="削除" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="トークの削除"/>
+
+
     </LinearLayout>
 
 </LinearLayout>

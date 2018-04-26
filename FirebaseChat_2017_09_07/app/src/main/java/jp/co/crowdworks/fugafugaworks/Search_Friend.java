@@ -1,8 +1,11 @@
 package jp.co.crowdworks.fugafugaworks;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,7 +34,7 @@ import java.util.ArrayList;
 public class Search_Friend extends AppCompatActivity {
 
     private static final String TAG = "Search_Friend";
-
+    MainActivity main = new MainActivity();
     private static final String USERE_STORE = "users";
    // private static final String SEARCH_STONE = "users/";
     private FirebaseListAdapter<Search> uAdapter;
@@ -62,8 +65,6 @@ public class Search_Friend extends AppCompatActivity {
         return database.getReference(USERE_STORE);
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState){
         //Log.i(TAG,"onCreate");
@@ -87,6 +88,31 @@ public class Search_Friend extends AppCompatActivity {
 
 
     }
+    public boolean onCreateOptionsMenu(Menu menu){
+        //menuにmenu.xmlレイアアウトを適用
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+    @Override
+    //メニュー選択時の処理
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.action_frend:
+                Intent intent = new Intent(getApplication(),Friend_Lista.class);
+                startActivity(intent);
+                break;
+            case R.id.action_searchfrends:
+                Intent intent2= new Intent(getApplication(),Search_Friend.class);
+                //intent.putExtra("Lista",mAdapter);
+                startActivity(intent2);
+                break;
+            default:
+                Intent intent3= new Intent(getApplication(),userData_Update.class);
+                startActivity(intent3);
+        }
+        return true;
+    }
+
 
     public void ListviewProcess(String name ){
 //        ListView listView = new ListView(this);
@@ -153,6 +179,7 @@ public class Search_Friend extends AppCompatActivity {
 
     public  void SearchProcess(){
         findViewById(R.id.searchbutton).setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
 
